@@ -1,6 +1,6 @@
 package frc.robot.commands.shoot;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Feeder;
@@ -19,7 +19,7 @@ public class ShootCommand extends SequentialCommandGroup{
         addCommands (
             new StartShooterCommand(RPM, shooter),
             new RunCommand(feeder::on, feeder).withTimeout(10),
-            new InstantCommand(feeder::off. feeder),
+            new InstantCommand(feeder::off, feeder),
             new StopShooterCommand(shooter)
         );
     }

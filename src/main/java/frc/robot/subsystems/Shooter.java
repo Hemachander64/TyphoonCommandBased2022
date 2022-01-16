@@ -7,16 +7,16 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase
 {
-    private CRRFalcon500 rightShooter;
-    private CRRFalcon500 leftShooter;
-    
-    private FlywheelSim shootSim;
+    protected CRRFalcon500 rightShooter;
+    protected CRRFalcon500 leftShooter;
 
     double setpoint;
     
@@ -54,7 +54,7 @@ public class Shooter extends SubsystemBase
     @Override
     public void periodic() 
     {
-        SmartDashboard.putNumber("Shtter Speeeeeeeed", rightShooter.getVelocity());
+        SmartDashboard.putNumber("Shewter Speeeeeeeed", rightShooter.getVelocity());
     }
 }
 

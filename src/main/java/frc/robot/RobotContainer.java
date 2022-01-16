@@ -9,15 +9,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.subsystems.Drivetrain;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.ShooterWithSim;
+
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -27,7 +26,8 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Drivetrain m_Drivetrain = new Drivetrain();
+  private final Drivetrain dt = new Drivetrain();
+  private final ShooterWithSim shooter = new ShooterWithSim();
 
 //  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   boolean slowMode = false;
@@ -42,10 +42,17 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     //slowMode = richard.getLeftBumper();
-    var slowButton = new JoystickButton(richard, kBumperLeft.value);
+    var slowButton = new JoystickButton(richard, kLeftBumper.value);
+    var shootButton = new JoystickButton(richard, kA.value);
     
-    slowButton.whenHeld(new RunCommand(() -> m_Drivetrain.setOutput(0.5))).whenReleased(new RunCommand(() -> m_Drivetrain.setOutput(1)));
-    m_Drivetrain.setDefaultCommand(new RunCommand(()->m_Drivetrain.driveBoy(-richard.getLeftY(), -richard.getRightX()), m_Drivetrain));
+    slowButton
+      .whileHeld(new RunCommand(() -> dt.setOutput(0.5)))
+      .whenReleased(new RunCommand(() -> dt.setOutput(1)));
+      
+    shootButton
+      .whileHeld(new RunCommand(() -> shooter.shoot(100)))
+      .whenReleased(new RunCommand(() -> shooter.stop()));
+    dt.setDefaultCommand(new RunCommand(() -> dt.driveBoy(-richard.getLeftY(), -richard.getRightX()), dt));
     
   }
 
@@ -67,7 +74,7 @@ public class RobotContainer {
   
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutonomousCommand(m_Drivetrain);
+    return new AutonomousCommand(dt);
   }
   
 }
