@@ -38,6 +38,7 @@
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Drivetrain": "Subsystem",
       "/LiveWindow/Lift": "Subsystem",
+      "/LiveWindow/LiftWithSim": "Subsystem",
       "/LiveWindow/ShooterWithSim": "Subsystem",
       "/LiveWindow/Ungrouped/ADXRS450_Gyro[0]": "Gyro",
       "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",

@@ -7,16 +7,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.commands.AutonomousCommand;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Lift;
-import frc.robot.subsystems.ShooterWithSim;
-
+import frc.robot.subsystems.*;
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
 
 /**
@@ -29,7 +24,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain dt = new Drivetrain();
   private final ShooterWithSim shooter = new ShooterWithSim();
-  private final Lift lift = new Lift();
+  private final Lift lift = new LiftWithSim();
 
 //  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   boolean slowMode = false;
@@ -83,8 +78,7 @@ public class RobotContainer {
    */
   
   public Command getAutonomousCommand() {
-    return new RunCommand(() -> shooter.setVelocity(5000), shooter);
-    // return new AutonomousCommand(dt);
+    return new AutonomousCommand(dt);
   }
   
 }
