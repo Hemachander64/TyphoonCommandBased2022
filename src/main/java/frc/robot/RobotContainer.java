@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.ShooterWithSim;
 
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
@@ -28,6 +29,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain dt = new Drivetrain();
   private final ShooterWithSim shooter = new ShooterWithSim();
+  private final Lift lift = new Lift();
 
 //  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   boolean slowMode = false;
@@ -44,6 +46,8 @@ public class RobotContainer {
     //slowMode = richard.getLeftBumper();
     var slowButton = new JoystickButton(richard, kLeftBumper.value);
     var shootButton = new JoystickButton(richard, kA.value);
+    var liftUpButton = new POVButton(richard, 0);
+    var liftDownButton = new POVButton(richard, 180); 
     
     slowButton
       .whileHeld(new RunCommand(() -> dt.setOutput(0.5)))
@@ -54,6 +58,12 @@ public class RobotContainer {
       .whenReleased(new RunCommand(() -> shooter.stop()));
     dt.setDefaultCommand(new RunCommand(() -> dt.driveBoy(-richard.getLeftY(), -richard.getRightX()), dt));
     
+    lift.setDefaultCommand(new RunCommand(() -> lift.off(), lift));
+
+
+    liftUpButton
+      .whileHeld(new RunCommand(() -> lift.on(1.0)))
+      .or(liftDownButton.whileHeld(new RunCommand(() -> lift.on(-1.0))));
   }
 
   /**
