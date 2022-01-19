@@ -7,22 +7,19 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.PIDGains;
 
 public class Shooter extends SubsystemBase
 {
     protected CRRFalcon500 rightShooter;
     protected CRRFalcon500 leftShooter;
-
-    double setpoint;
     
     public Shooter()
     {
-        rightShooter = new CRRFalcon500(Constants.RIGHT_SHOOTER_MOTOR_ID);
+        rightShooter = new CRRFalcon500(Constants.RIGHT_SHOOTER_MOTOR_ID, false, NeutralMode.Coast, new PIDGains(10000, 0, 0));
         leftShooter = new CRRFalcon500(Constants.LEFT_SHOOTER_MOTOR_ID, true, NeutralMode.Coast, rightShooter);
     }
     
@@ -31,14 +28,20 @@ public class Shooter extends SubsystemBase
      * @param double tolerance the tolerance for targetSpeed
      * @return whether or not the shooter has reached the desired velocity.
      */
-    public boolean atSetpoint( double tolerance)
+    public boolean atSetpoint()
     {
+        double tolerance = 50;
         return rightShooter.atSetpoint(tolerance);
     }
 
-    public void shoot(double setpoint) 
+    public void setPower(double power)
     {
-        this.setpoint = setpoint;
+        rightShooter.set(power);
+        leftShooter.set(power);
+    }
+
+    public void setVelocity(double setpoint) 
+    {
         leftShooter.setVelocity(setpoint);
         rightShooter.setVelocity(setpoint);
     }
@@ -48,7 +51,8 @@ public class Shooter extends SubsystemBase
     */
     public void stop()
     {
-        shoot(0);
+        rightShooter.set(0);
+        leftShooter.set(0);
     }
 
     @Override
@@ -57,5 +61,3 @@ public class Shooter extends SubsystemBase
         SmartDashboard.putNumber("Shewter Speeeeeeeed", rightShooter.getVelocity());
     }
 }
-
-

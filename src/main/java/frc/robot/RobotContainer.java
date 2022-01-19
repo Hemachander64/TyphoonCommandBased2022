@@ -50,7 +50,7 @@ public class RobotContainer {
       .whenReleased(new RunCommand(() -> dt.setOutput(1)));
       
     shootButton
-      .whileHeld(new RunCommand(() -> shooter.shoot(100)))
+      .whileHeld(new RunCommand(() -> shooter.setPower(1)))
       .whenReleased(new RunCommand(() -> shooter.stop()));
     dt.setDefaultCommand(new RunCommand(() -> dt.driveBoy(-richard.getLeftY(), -richard.getRightX()), dt));
     
@@ -73,8 +73,8 @@ public class RobotContainer {
    */
   
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return new AutonomousCommand(dt);
+    return new RunCommand(() -> shooter.setVelocity(5000), shooter);
+    // return new AutonomousCommand(dt);
   }
   
 }

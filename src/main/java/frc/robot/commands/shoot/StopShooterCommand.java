@@ -16,6 +16,6 @@ public class StopShooterCommand extends CommandBase {
     }
     
     public boolean isFinished() {
-        return shooter.atSetpoint(1.0);
+        return shooter.atSetpoint();
     }
 }

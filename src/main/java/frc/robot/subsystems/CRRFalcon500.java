@@ -129,7 +129,7 @@ public class CRRFalcon500 extends WPI_TalonFX
      * @param rpm velocity in revolutions per minute
      * @return converted velocity that you can pass into set(TalonFXControlMode.Velocity, [converted velocity here])
      */
-    private double RPMtoTalonUnits(double rpm)
+    public static double RPMtoTalonUnits(double rpm)
     {        
         // So the TalonFX uses "encoder units/100ms", not RPM in the Velocity control mode
         
@@ -144,7 +144,7 @@ public class CRRFalcon500 extends WPI_TalonFX
         return unitsPer100ms;
     }
 
-    private double TalonUnitstoRPM(double value)
+    public static double TalonUnitstoRPM(double value)
     {
         double revolutionsPer100ms = value / 2048;
         double RPM = revolutionsPer100ms * 600;

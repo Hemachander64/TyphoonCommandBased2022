@@ -15,11 +15,11 @@ public class StartShooterCommand extends CommandBase {
 
     public void execute()
     {
-        shooter.shoot(RPM);
+        shooter.setVelocity(RPM);
     }
     
     public boolean isFinished()
     {
-        return shooter.atSetpoint(RPM);
+        return shooter.atSetpoint();
     }
 }
