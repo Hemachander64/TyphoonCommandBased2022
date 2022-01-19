@@ -23,6 +23,8 @@ public final class Constants {
     public static final int FEEDER_MOTOR_ID = 0;
     public static final int LEFT_SHOOTER_MOTOR_ID = 0;
     public static final int RIGHT_SHOOTER_MOTOR_ID = 0;
+    public static final int LIFT_MOTOR_ID = 9;
+    public static final int INTAKE_MOTOR_ID = 10;
 
     /**
      * Stores PID gain constants.
