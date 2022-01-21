@@ -23,8 +23,8 @@ import static edu.wpi.first.wpilibj.XboxController.Button.*;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain dt = new Drivetrain();
-  private final ShooterWithSim shooter = new ShooterWithSim();
-  private final Lift lift = new LiftWithSim();
+  // private final ShooterWithSim shooter = new ShooterWithSim();
+  // private final Lift lift = new LiftWithSim();
 
 //  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   boolean slowMode = false;
@@ -45,20 +45,20 @@ public class RobotContainer {
     var liftDownButton = new POVButton(richard, 180); 
     
     slowButton
-      .whileHeld(new RunCommand(() -> dt.setOutput(0.5)))
+      .whileHeld(new RunCommand(() -> dt.setOutput(0.2)))
       .whenReleased(new RunCommand(() -> dt.setOutput(1)));
       
-    shootButton
-      .whileHeld(new RunCommand(() -> shooter.setPower(1)))
-      .whenReleased(new RunCommand(() -> shooter.stop()));
-    dt.setDefaultCommand(new RunCommand(() -> dt.driveBoy(-richard.getLeftY(), -richard.getRightX()), dt));
+    // shootButton
+    //   .whileHeld(new RunCommand(() -> shooter.setPower(1)))
+    //   .whenReleased(new RunCommand(() -> shooter.stop()));
+    dt.setDefaultCommand(new RunCommand(() -> dt.driveBoy(-richard.getLeftY(), richard.getRightX()), dt));
     
-    lift.setDefaultCommand(new RunCommand(() -> lift.off(), lift));
+    // lift.setDefaultCommand(new RunCommand(() -> lift.off(), lift));
 
 
-    liftUpButton
-      .whileHeld(new RunCommand(() -> lift.on(1.0)))
-      .or(liftDownButton.whileHeld(new RunCommand(() -> lift.on(-1.0))));
+    // liftUpButton
+    //   .whileHeld(new RunCommand(() -> lift.on(1.0)))
+    //   .or(liftDownButton.whileHeld(new RunCommand(() -> lift.on(-1.0))));
   }
 
   /**
@@ -70,15 +70,12 @@ public class RobotContainer {
   private void configureButtonBindings() {
   }
 
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  
   public Command getAutonomousCommand() {
     return new AutonomousCommand(dt);
   }
-  
 }

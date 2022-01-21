@@ -7,6 +7,11 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -14,27 +19,22 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class Drivetrain extends SubsystemBase {
-	//commented out sections because talons were used instead of cansparks for now
+public class Drivetrain extends SubsystemBase
+{
+	// Create our motors
 
-	//Create our motors
-	/*
-	WPI_TalonSRX leftFront = new WPI_TalonSRX(1);
-	WPI_TalonSRX leftBack = new WPI_TalonSRX(2);
-	WPI_TalonSRX rightFront = new WPI_TalonSRX(3);
-	WPI_TalonSRX rightBack = new WPI_TalonSRX(4);
-	*/
-	
-	CANSparkMax leftFront = new CANSparkMax(1, MotorType.kBrushless);
-	CANSparkMax leftBack = new CANSparkMax(5, MotorType.kBrushless);
-	CANSparkMax rightFront = new CANSparkMax(7, MotorType.kBrushless);
-	CANSparkMax rightBack = new CANSparkMax(8, MotorType.kBrushless);
-	
+	CANSparkMax leftFront = new CANSparkMax(Constants.LF_MOTOR_ID, MotorType.kBrushless);
+	CANSparkMax leftBack = new CANSparkMax(Constants.LB_MOTOR_ID, MotorType.kBrushless);
+	CANSparkMax rightFront = new CANSparkMax(Constants.RF_MOTOR_ID, MotorType.kBrushless);
+	CANSparkMax rightBack = new CANSparkMax(Constants.RB_MOTOR_ID, MotorType.kBrushless);
+
 	RelativeEncoder lfEncoder = leftFront.getEncoder();
 	RelativeEncoder lbEncoder = leftBack.getEncoder();
 	RelativeEncoder rfEncoder = rightFront.getEncoder();
@@ -44,39 +44,56 @@ public class Drivetrain extends SubsystemBase {
 	MotorControllerGroup right = new MotorControllerGroup(rightFront, rightBack);;
 
 	DifferentialDrive dt = new DifferentialDrive(left, right);
-	
+
 	Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 
 	private static final double output = 1.0;
 
+	public static final double kTrackwidthMeters = 0.69;
+	public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
+			kTrackwidthMeters);
+
+	private final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
+			new Rotation2d(), new Pose2d());
+
 	public Drivetrain()
 	{
-		// leftFront.setNeutralMode(NeutralMode.Coast);
-		// leftBack.setNeutralMode(NeutralMode.Coast);
-		// rightFront.setNeutralMode(NeutralMode.Coast);
-		// rightBack.setNeutralMode(NeutralMode.Coast);
+
+		lfEncoder.setPositionConversionFactor(0.4788);
+		rfEncoder.setPositionConversionFactor(0.4788);
+		lfEncoder.setVelocityConversionFactor(0.4788);
+		rfEncoder.setVelocityConversionFactor(0.4788);
+
+		lfEncoder.setPosition(0);
+		lbEncoder.setPosition(0);
+		rfEncoder.setPosition(0);
+		rbEncoder.setPosition(0);
+
+		leftFront.setIdleMode(IdleMode.kCoast);
+		rightFront.setIdleMode(IdleMode.kCoast);
+		leftBack.setIdleMode(IdleMode.kCoast);
+		rightBack.setIdleMode(IdleMode.kCoast);
 
 		leftFront.setInverted(true);
-		dt = new DifferentialDrive(left, right);
-		lfEncoder.setPositionConversionFactor(1/34.0);
-		rfEncoder.setPositionConversionFactor(-1/34.0);
-		lfEncoder.setPosition(0);
-		rfEncoder.setPosition(0);
+		leftBack.setInverted(true);
 
 		leftFront.burnFlash();
-		rightFront.burnFlash();	
+		leftBack.burnFlash();
+		rightFront.burnFlash();
+		rightBack.burnFlash();
 	}
 
-	public void driveBoy(double xspeed, double zrotation){
-		dt.arcadeDrive(output * xspeed, output * zrotation);
+	public void driveBoy(double xSpeed, double zRotation)
+	{
+		dt.arcadeDrive(output * xSpeed, output * zRotation);
 	}
 
 	public double getDistance()
 	{
-		//return 0;
+		// return 0;
 		SmartDashboard.putNumber("position", lfEncoder.getPosition());
 		return lfEncoder.getPosition();
-		
+
 	}
 
 	public double getAngle()
@@ -95,7 +112,6 @@ public class Drivetrain extends SubsystemBase {
 		dt.setMaxOutput(x);
 	}
 
-
 	public void resetEncoders()
 	{
 		lfEncoder.setPosition(0);
@@ -108,12 +124,43 @@ public class Drivetrain extends SubsystemBase {
 		gyro.calibrate();
 	}
 
-  @Override
-  public void periodic() {
-	// This method will be called once per scheduler run'
-	SmartDashboard.putNumber("lTicks", lfEncoder.getPosition());
-	SmartDashboard.putNumber("rTicks", rfEncoder.getPosition());
-  }
+	@Override
+	public void periodic()
+	{
+		// This method will be called once per scheduler run'
+		SmartDashboard.putNumber("lTicks", lfEncoder.getPosition());
+		SmartDashboard.putNumber("rTicks", rfEncoder.getPosition());
 
-  
+		odometry.update(gyro.getRotation2d(), lfEncoder.getPosition(), rfEncoder.getPosition());
+	}
+
+	public DifferentialDriveWheelSpeeds getWheelSpeeds()
+	{
+		return new DifferentialDriveWheelSpeeds(lfEncoder.getVelocity(), rfEncoder.getVelocity());
+	}
+
+	public Pose2d getPose()
+	{
+		return odometry.getPoseMeters();
+	}
+
+	/**
+	 * Controls the left and right sides of the drive directly with voltages.
+	 *
+	 * @param leftVolts
+	 *            the commanded left output
+	 * @param rightVolts
+	 *            the commanded right output
+	 */
+	public void tankDriveVolts(double leftVolts, double rightVolts)
+	{
+		left.setVoltage(leftVolts);
+		right.setVoltage(rightVolts);
+		dt.feed();
+	}
+
+	public void resetOdometry(Pose2d initialPose)
+	{
+		odometry.resetPosition(initialPose, new Rotation2d(gyro.getAngle()));
+	}
 }

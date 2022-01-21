@@ -16,6 +16,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    
     public static final int LF_MOTOR_ID = 1;
     public static final int LB_MOTOR_ID = 5;
     public static final int RF_MOTOR_ID = 7;
@@ -25,6 +26,16 @@ public final class Constants {
     public static final int RIGHT_SHOOTER_MOTOR_ID = 0;
     public static final int LIFT_MOTOR_ID = 9;
     public static final int INTAKE_MOTOR_ID = 10;
+
+
+    //Feedforward constants
+    public static final double ksVolts = -0.50723;
+    public static final double kvVoltSecondsPerMeter = 1.344;
+    public static final double kaVoltSecondsSquaredPerMeter = 21.375;
+    public static final double kPDriveVel = 3.5116;
+
+    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
 
     /**
      * Stores PID gain constants.
@@ -40,5 +51,6 @@ public final class Constants {
             this.kI = kI;
             this.kD = kD;
         }
+
     }
 }
