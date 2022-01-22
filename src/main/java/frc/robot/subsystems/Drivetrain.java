@@ -74,8 +74,10 @@ public class Drivetrain extends SubsystemBase
 		leftBack.setIdleMode(IdleMode.kCoast);
 		rightBack.setIdleMode(IdleMode.kCoast);
 
-		leftFront.setInverted(true);
-		leftBack.setInverted(true);
+		leftFront.setInverted(false);
+		leftBack.setInverted(false);
+		rightFront.setInverted(true);
+		rightBack.setInverted(true);
 
 		leftFront.burnFlash();
 		leftBack.burnFlash();
