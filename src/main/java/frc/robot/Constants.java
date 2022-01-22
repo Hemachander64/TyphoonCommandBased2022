@@ -26,19 +26,12 @@ public final class Constants {
     public static final int LIFT_MOTOR_ID = 9;
     public static final int INTAKE_MOTOR_ID = 10;
     
-<<<<<<< Updated upstream
     //empirically found from sysID
     public static final double ksVolts = 0.091189;
     public static final double kvVoltSecondsPerMeter = 2.8374;
     public static final double kaVoltSecondsSquaredPerMeter = 0.2758;
     public static final double kPDriveVel = 1.096;
     
-=======
-    public static final double ksVolts = 0.091189; 
-    public static final double kvVoltSecondsPerMeter = 2.8374;
-    public static final double kaVoltSecondsSquaredPerMeter =  0.2758;  
-    public static final double kPDriveVel = 1.096;
->>>>>>> Stashed changes
 
     public static final double kMaxSpeedMetersPerSecond = 3.0 / 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3.0 / 3;

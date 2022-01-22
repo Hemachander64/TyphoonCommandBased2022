@@ -70,10 +70,10 @@ public class Drivetrain extends SubsystemBase
 		rfEncoder.setPosition(0);
 		rbEncoder.setPosition(0);
 
-		leftFront.setIdleMode(IdleMode.kBrake);
-		rightFront.setIdleMode(IdleMode.kBrake);
-		leftBack.setIdleMode(IdleMode.kBrake);
-		rightBack.setIdleMode(IdleMode.kBrake);
+		leftFront.setIdleMode(IdleMode.kCoast);
+		rightFront.setIdleMode(IdleMode.kCoast);
+		leftBack.setIdleMode(IdleMode.kCoast);
+		rightBack.setIdleMode(IdleMode.kCoast);
 
 		leftFront.setInverted(false);
 		leftBack.setInverted(false);
@@ -86,7 +86,7 @@ public class Drivetrain extends SubsystemBase
 		rightBack.burnFlash();
 	}
 
-	public void driveBoy(double xSpeed, double zRotation)
+	public void arcadeDrive(double xSpeed, double zRotation)
 	{
 		dt.arcadeDrive(output * xSpeed, output * zRotation);
 	}
@@ -172,5 +172,10 @@ public class Drivetrain extends SubsystemBase
 	public void resetOdometry(Pose2d initialPose)
 	{
 		odometry.resetPosition(initialPose, new Rotation2d(gyro.getAngle()));
+	}
+
+	public double getAverageDistanceMeters()
+	{
+		return Math.max(lfEncoder.getPosition(), rfEncoder.getPosition());
 	}
 }

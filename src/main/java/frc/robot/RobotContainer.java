@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.drive.DriveToDistanceCommand;
 import frc.robot.commands.drive.RamseteTrajCommand;
+import frc.robot.commands.drive.TTAProfiled;
 import frc.robot.commands.drive.TurnToAngleCommand;
 import frc.robot.subsystems.*;
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
@@ -33,7 +34,7 @@ public class RobotContainer {
 
 //  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   boolean slowMode = false;
-  XboxController richard = new XboxController(0);
+  XboxController driverController = new XboxController(0);
 
   
  // s
@@ -44,10 +45,10 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     //slowMode = richard.getLeftBumper();
-    var slowButton = new JoystickButton(richard, kLeftBumper.value);
-    var shootButton = new JoystickButton(richard, kA.value);
-    var liftUpButton = new POVButton(richard, 0);
-    var liftDownButton = new POVButton(richard, 180); 
+    var slowButton = new JoystickButton(driverController, kLeftBumper.value);
+    var shootButton = new JoystickButton(driverController, kA.value);
+    var liftUpButton = new POVButton(driverController, 0);
+    var liftDownButton = new POVButton(driverController, 180); 
     
     slowButton
       .whileHeld(new RunCommand(() -> dt.setOutput(0.2)))
@@ -56,7 +57,7 @@ public class RobotContainer {
     // shootButton
     //   .whileHeld(new RunCommand(() -> shooter.setPower(1)))
     //   .whenReleased(new RunCommand(() -> shooter.stop()));
-    dt.setDefaultCommand(new RunCommand(() -> dt.driveBoy(-richard.getLeftY(), richard.getRightX()), dt));
+    dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()), dt));
     
     // lift.setDefaultCommand(new RunCommand(() -> lift.off(), lift));
 
@@ -81,9 +82,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new RamseteTrajCommand(dt);
+    // return new RamseteTrajCommand(dt);
     // return new DriveToDistanceCommand(1, dt);
     // return new TurnToAngleCommand(90, dt);
+    return new TTAProfiled(90, dt);
   }
 
   public void disabledInit() {
