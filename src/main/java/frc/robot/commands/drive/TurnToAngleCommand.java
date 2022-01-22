@@ -15,7 +15,7 @@ public class TurnToAngleCommand extends PIDCommand
             angleDegrees,   //  PID setpoint
             output -> dt.driveBoy(0, -output),    //  PID output method as a lambda, this will turn the robot to the desired angle
             dt);    //  every command must have its subsystems passed in as "requirements"
- 
+
         getController().setTolerance(3);    //  the tolerance with which the isFinished() method checks if the PV is within the setpoint
 
         this.dt = dt;

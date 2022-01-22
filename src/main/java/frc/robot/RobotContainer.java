@@ -11,8 +11,13 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.drive.DriveToDistanceCommand;
+import frc.robot.commands.drive.RamseteTrajCommand;
+import frc.robot.commands.drive.TurnToAngleCommand;
 import frc.robot.subsystems.*;
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
+
+import edu.wpi.first.math.geometry.Pose2d;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -76,6 +81,13 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new AutonomousCommand(dt);
+    return new RamseteTrajCommand(dt);
+    // return new DriveToDistanceCommand(1, dt);
+    // return new TurnToAngleCommand(90, dt);
+  }
+
+  public void disabledInit() {
+    dt.resetOdometry(new Pose2d());
+    dt.resetSensors();
   }
 }

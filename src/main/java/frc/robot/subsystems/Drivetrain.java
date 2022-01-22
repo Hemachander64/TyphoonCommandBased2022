@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -45,7 +46,8 @@ public class Drivetrain extends SubsystemBase
 
 	DifferentialDrive dt = new DifferentialDrive(left, right);
 
-	Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+	// Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+	AHRS gyro = new AHRS(SPI.Port.kMXP);
 
 	private static final double output = 1.0;
 
@@ -58,21 +60,20 @@ public class Drivetrain extends SubsystemBase
 
 	public Drivetrain()
 	{
-
-		lfEncoder.setPositionConversionFactor(0.4788);
-		rfEncoder.setPositionConversionFactor(0.4788);
-		lfEncoder.setVelocityConversionFactor(0.4788);
-		rfEncoder.setVelocityConversionFactor(0.4788);
+		lfEncoder.setPositionConversionFactor(0.4788 / 10.71);
+		rfEncoder.setPositionConversionFactor(-0.4788 / 10.71);
+		lfEncoder.setVelocityConversionFactor(0.4788 / 10.71);
+		rfEncoder.setVelocityConversionFactor(-0.4788 / 10.71);
 
 		lfEncoder.setPosition(0);
 		lbEncoder.setPosition(0);
 		rfEncoder.setPosition(0);
 		rbEncoder.setPosition(0);
 
-		leftFront.setIdleMode(IdleMode.kCoast);
-		rightFront.setIdleMode(IdleMode.kCoast);
-		leftBack.setIdleMode(IdleMode.kCoast);
-		rightBack.setIdleMode(IdleMode.kCoast);
+		leftFront.setIdleMode(IdleMode.kBrake);
+		rightFront.setIdleMode(IdleMode.kBrake);
+		leftBack.setIdleMode(IdleMode.kBrake);
+		rightBack.setIdleMode(IdleMode.kBrake);
 
 		leftFront.setInverted(false);
 		leftBack.setInverted(false);
@@ -133,6 +134,13 @@ public class Drivetrain extends SubsystemBase
 		SmartDashboard.putNumber("lTicks", lfEncoder.getPosition());
 		SmartDashboard.putNumber("rTicks", rfEncoder.getPosition());
 
+		// Print out the odometry to smartdashboard
+		final var odometryPose = odometry.getPoseMeters();
+		SmartDashboard.putNumber("odom x", odometryPose.getTranslation().getX());
+		SmartDashboard.putNumber("odom y", odometryPose.getTranslation().getY());
+		SmartDashboard.putNumber("odom heading", odometryPose.getRotation().getDegrees());
+		SmartDashboard.putNumber("gyro raw angle", gyro.getAngle());
+
 		odometry.update(gyro.getRotation2d(), lfEncoder.getPosition(), rfEncoder.getPosition());
 	}
 
@@ -156,8 +164,8 @@ public class Drivetrain extends SubsystemBase
 	 */
 	public void tankDriveVolts(double leftVolts, double rightVolts)
 	{
-		left.setVoltage(leftVolts);
-		right.setVoltage(rightVolts);
+		left.setVoltage(-leftVolts);
+		right.setVoltage(-rightVolts);
 		dt.feed();
 	}
 
