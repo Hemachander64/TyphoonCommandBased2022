@@ -28,7 +28,7 @@ import edu.wpi.first.math.geometry.Pose2d;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Drivetrain dt = new Drivetrain();
+  private final Drivetrain dt = new DrivetrainWithSim();
   // private final ShooterWithSim shooter = new ShooterWithSim();
   // private final Lift lift = new LiftWithSim();
 
@@ -86,6 +86,9 @@ public class RobotContainer {
     // return new DriveToDistanceCommand(1, dt);
     // return new TurnToAngleCommand(90, dt);
     return new TTAProfiled(90, dt);
+
+    //return new RamseteTrajCommand(dt);
+
   }
 
   public void disabledInit() {

@@ -12,11 +12,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.math.util.Units;
+//import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -46,14 +48,20 @@ public class Drivetrain extends SubsystemBase
 
 	DifferentialDrive dt = new DifferentialDrive(left, right);
 
+	Field2d field = new Field2d();
+
 	// Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-	AHRS gyro = new AHRS(SPI.Port.kMXP);
+	Gyro gyro = new AHRS(SPI.Port.kMXP);
 
 	private static final double output = 1.0;
 
 	public static final double kTrackwidthMeters = 0.69;
+	public static final double kWheelDiameterMeters = Units.inchesToMeters(6);
+	
 	public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
 			kTrackwidthMeters);
+
+
 
 	private final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
 			new Rotation2d(), new Pose2d());
@@ -84,6 +92,8 @@ public class Drivetrain extends SubsystemBase
 		leftBack.burnFlash();
 		rightFront.burnFlash();
 		rightBack.burnFlash();
+
+		SmartDashboard.putData(field);
 	}
 
 	public void arcadeDrive(double xSpeed, double zRotation)
@@ -96,7 +106,6 @@ public class Drivetrain extends SubsystemBase
 		// return 0;
 		SmartDashboard.putNumber("position", lfEncoder.getPosition());
 		return lfEncoder.getPosition();
-
 	}
 
 	public double getAngle()
@@ -109,6 +118,7 @@ public class Drivetrain extends SubsystemBase
 		resetEncoders();
 		resetGyro();
 	}
+
 
 	public void setOutput(double x)
 	{
@@ -140,7 +150,7 @@ public class Drivetrain extends SubsystemBase
 		SmartDashboard.putNumber("odom y", odometryPose.getTranslation().getY());
 		SmartDashboard.putNumber("odom heading", odometryPose.getRotation().getDegrees());
 		SmartDashboard.putNumber("gyro raw angle", gyro.getAngle());
-
+		field.setRobotPose(getPose());
 		odometry.update(gyro.getRotation2d(), lfEncoder.getPosition(), rfEncoder.getPosition());
 	}
 
