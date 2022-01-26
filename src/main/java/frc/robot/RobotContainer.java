@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.drive.DTDProfiled;
 import frc.robot.commands.drive.DriveToDistanceCommand;
 import frc.robot.commands.drive.RamseteTrajCommand;
 import frc.robot.commands.drive.TTAProfiled;
@@ -85,7 +86,8 @@ public class RobotContainer {
     // return new RamseteTrajCommand(dt);
     // return new DriveToDistanceCommand(1, dt);
     // return new TurnToAngleCommand(90, dt);
-    return new TTAProfiled(90, dt);
+    // return new TTAProfiled(90, dt);
+    return new DriveToDistanceCommand(3.5, dt);
 
     //return new RamseteTrajCommand(dt);
 
