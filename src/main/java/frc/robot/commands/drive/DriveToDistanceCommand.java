@@ -5,6 +5,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveToDistanceCommand extends PIDCommand
@@ -13,12 +14,12 @@ public class DriveToDistanceCommand extends PIDCommand
     
     public DriveToDistanceCommand(double distMeters, Drivetrain dt)
     {
-        super(new PIDController(3.5, 0, 0),
-            dt::getDistance,    //  PID's process variable getter method
+        super(new PIDController(Constants.DTD_KP, 0, 0),
+            dt::getAverageDistanceMeters,    //  PID's process variable getter method
             distMeters, //  PID setpoint
             output -> dt.arcadeDrive(output, 0),
             dt);    //  PID output method as a lambda, this w>?>,
-        getController().setTolerance(0.05);  //  the tolerance with which the isFinished() method checks if the PV is within the setpoint
+        getController().setTolerance(Constants.DTD_TOLERANCE);  //  the tolerance with which the isFinished() method checks if the PV is within the setpoint
 
         this.dt = dt;
     }

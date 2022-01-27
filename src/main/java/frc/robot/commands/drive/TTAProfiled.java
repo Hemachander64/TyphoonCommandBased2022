@@ -13,9 +13,8 @@ public class TTAProfiled extends ProfiledPIDCommand
     
     public TTAProfiled(double angleDegrees, Drivetrain dt)
     {
-        super(new ProfiledPIDController(0.012, 0, 0, 
-                new TrapezoidProfile.Constraints(1800,
-                    900 / 1)),
+        super(new ProfiledPIDController(Constants.TTAP_KP, 0, 0, 
+                new TrapezoidProfile.Constraints(Constants.TTAP_MV, Constants.TTAP_MA)),
             dt::getAngle,
             new TrapezoidProfile.State(angleDegrees, 0),
             (output, setpoint) -> dt.arcadeDrive(0, output),

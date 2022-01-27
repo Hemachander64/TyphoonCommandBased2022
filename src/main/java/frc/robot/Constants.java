@@ -28,6 +28,16 @@ public final class Constants {
     public static final int LIFT_MOTOR_ID = 9;
     public static final int INTAKE_MOTOR_ID = 10;
     
+    public static final double DTD_KP = 1.1;
+    public static final double DTD_TOLERANCE = 0.05;
+    public static final double DTDP_KP = 1.1;
+    public static final double TTAP_KP = 0.012;
+    public static final double TTAP_MV = 1800;
+    public static final double TTAP_MA = TTAP_MV / 2;
+    public static final double DTDP_MV = Units.feetToMeters(15);
+    public static final double DTDP_MA = DTDP_MV / 1;
+    public static final double DTDP_TOLERANCE = 0.03; 
+    
     //empirically found from sysID
     public static final double ksVolts = 0.091189;
     public static final double kvVoltSecondsPerMeter = 2.8374;

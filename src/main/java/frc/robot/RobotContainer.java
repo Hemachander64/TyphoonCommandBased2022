@@ -8,6 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.smartdashboard.*;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.commands.AutonomousCommand;
@@ -19,6 +21,7 @@ import frc.robot.commands.drive.TurnToAngleCommand;
 import frc.robot.subsystems.*;
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 
 /**
@@ -30,6 +33,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain dt = new DrivetrainWithSim();
+  private final SendableChooser<Command> chooser = new SendableChooser<Command>();
   // private final ShooterWithSim shooter = new ShooterWithSim();
   // private final Lift lift = new LiftWithSim();
 
@@ -37,8 +41,6 @@ public class RobotContainer {
   boolean slowMode = false;
   XboxController driverController = new XboxController(0);
 
-  
- // s
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -66,6 +68,14 @@ public class RobotContainer {
     // liftUpButton
     //   .whileHeld(new RunCommand(() -> lift.on(1.0)))
     //   .or(liftDownButton.whileHeld(new RunCommand(() -> lift.on(-1.0))));
+    
+    chooser.setDefaultOption("Drive To Distance", new DriveToDistanceCommand(1, dt));
+    chooser.addOption("Turn To Angle", new TurnToAngleCommand(90, dt));
+    chooser.addOption("TTAProfiled", new TTAProfiled(90, dt));
+    chooser.addOption("Ramsete Trajectory Command", new RamseteTrajCommand(dt));
+    chooser.addOption("DTDProfiled", new DriveToDistanceCommand(1, dt));
+
+    SmartDashboard.putData(chooser);
   }
 
   /**
@@ -83,18 +93,13 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // return new RamseteTrajCommand(dt);
-    // return new DriveToDistanceCommand(1, dt);
-    // return new TurnToAngleCommand(90, dt);
-    // return new TTAProfiled(90, dt);
-    return new DriveToDistanceCommand(3.5, dt);
-
-    //return new RamseteTrajCommand(dt);
-
+    return chooser.getSelected();
   }
 
   public void disabledInit() {
     dt.resetOdometry(new Pose2d());
     dt.resetSensors();
   }
+
+  
 }

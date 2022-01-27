@@ -61,17 +61,15 @@ public class Drivetrain extends SubsystemBase
 	public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
 			kTrackwidthMeters);
 
-
-
 	private final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
 			new Rotation2d(), new Pose2d());
 
 	public Drivetrain()
 	{
 		lfEncoder.setPositionConversionFactor(0.4788 / 10.71);
-		rfEncoder.setPositionConversionFactor(-0.4788 / 10.71);
+		rfEncoder.setPositionConversionFactor(0.4788 / 10.71);
 		lfEncoder.setVelocityConversionFactor(0.4788 / 10.71);
-		rfEncoder.setVelocityConversionFactor(-0.4788 / 10.71);
+		rfEncoder.setVelocityConversionFactor(0.4788 / 10.71);
 
 		lfEncoder.setPosition(0);
 		lbEncoder.setPosition(0);
@@ -99,13 +97,6 @@ public class Drivetrain extends SubsystemBase
 	public void arcadeDrive(double xSpeed, double zRotation)
 	{
 		dt.arcadeDrive(output * xSpeed, output * zRotation);
-	}
-
-	public double getDistance()
-	{
-		// return 0;
-		SmartDashboard.putNumber("position", lfEncoder.getPosition());
-		return lfEncoder.getPosition();
 	}
 
 	public double getAngle()
@@ -150,6 +141,7 @@ public class Drivetrain extends SubsystemBase
 		SmartDashboard.putNumber("odom y", odometryPose.getTranslation().getY());
 		SmartDashboard.putNumber("odom heading", odometryPose.getRotation().getDegrees());
 		SmartDashboard.putNumber("gyro raw angle", gyro.getAngle());
+		SmartDashboard.putNumber("dtd dist", getAverageDistanceMeters());
 		field.setRobotPose(getPose());
 		odometry.update(gyro.getRotation2d(), lfEncoder.getPosition(), rfEncoder.getPosition());
 	}
