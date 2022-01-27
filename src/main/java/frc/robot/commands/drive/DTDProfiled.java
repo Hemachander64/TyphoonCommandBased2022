@@ -16,7 +16,7 @@ public class DTDProfiled extends ProfiledPIDCommand
     {
         super(new ProfiledPIDController(Constants.DTDP_KP, 0, 0,
                 new TrapezoidProfile.Constraints(Constants.DTDP_MV, Constants.DTDP_MA)),
-            () -> dt.getAverageDistanceMeters(),
+            () -> dt.getDistanceMeters(),
             new TrapezoidProfile.State(distanceMeters, 0),
             (output, setpoint) -> dt.arcadeDrive(output, 0),
             dt);
@@ -35,7 +35,7 @@ public class DTDProfiled extends ProfiledPIDCommand
     {
         super.initialize();
 
-        var goal = new TrapezoidProfile.State(distanceMeters + dt.getAverageDistanceMeters(), 0);
+        var goal = new TrapezoidProfile.State(distanceMeters + dt.getDistanceMeters(), 0);
         this.m_goal = () -> goal;
     }
 

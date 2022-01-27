@@ -73,7 +73,7 @@ public class RobotContainer {
     chooser.addOption("Turn To Angle", new TurnToAngleCommand(90, dt));
     chooser.addOption("TTAProfiled", new TTAProfiled(90, dt));
     chooser.addOption("Ramsete Trajectory Command", new RamseteTrajCommand(dt));
-    chooser.addOption("DTDProfiled", new DriveToDistanceCommand(1, dt));
+    chooser.addOption("DTDProfiled", new DTDProfiled(1, dt));
 
     SmartDashboard.putData(chooser);
   }

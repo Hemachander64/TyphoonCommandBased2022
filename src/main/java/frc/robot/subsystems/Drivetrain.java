@@ -141,7 +141,7 @@ public class Drivetrain extends SubsystemBase
 		SmartDashboard.putNumber("odom y", odometryPose.getTranslation().getY());
 		SmartDashboard.putNumber("odom heading", odometryPose.getRotation().getDegrees());
 		SmartDashboard.putNumber("gyro raw angle", gyro.getAngle());
-		SmartDashboard.putNumber("dtd dist", getAverageDistanceMeters());
+		SmartDashboard.putNumber("dtd dist", getDistanceMeters());
 		field.setRobotPose(getPose());
 		odometry.update(gyro.getRotation2d(), lfEncoder.getPosition(), rfEncoder.getPosition());
 	}
@@ -176,7 +176,7 @@ public class Drivetrain extends SubsystemBase
 		odometry.resetPosition(initialPose, new Rotation2d(gyro.getAngle()));
 	}
 
-	public double getAverageDistanceMeters()
+	public double getDistanceMeters()
 	{
 		return Math.max(lfEncoder.getPosition(), rfEncoder.getPosition());
 	}
