@@ -24,7 +24,7 @@ public class DTDProfiled extends ProfiledPIDCommand
         this.dt = dt;
         this.distanceMeters = distanceMeters;
 
-        getController().setTolerance(Constants.DTDP_TOLERANCE);
+        getController().setTolerance(Constants.DTD_TOLERANCE);
         // getController().setTolerance(0.01);
         System.out.println("Hello World");
     }

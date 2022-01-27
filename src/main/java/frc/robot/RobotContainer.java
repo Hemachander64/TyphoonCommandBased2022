@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.SquareAuto;
 import frc.robot.commands.drive.DTDProfiled;
 import frc.robot.commands.drive.DriveToDistanceCommand;
 import frc.robot.commands.drive.RamseteTrajCommand;
@@ -74,6 +75,7 @@ public class RobotContainer {
     chooser.addOption("TTAProfiled", new TTAProfiled(90, dt));
     chooser.addOption("Ramsete Trajectory Command", new RamseteTrajCommand(dt));
     chooser.addOption("DTDProfiled", new DTDProfiled(1, dt));
+    chooser.addOption("SquarePath", new SquareAuto(dt));
 
     SmartDashboard.putData(chooser);
   }
