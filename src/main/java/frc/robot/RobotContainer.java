@@ -12,13 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.*;
-import frc.robot.commands.AutonomousCommand;
-import frc.robot.commands.SquareAuto;
-import frc.robot.commands.drive.DTDProfiled;
-import frc.robot.commands.drive.DriveToDistanceCommand;
-import frc.robot.commands.drive.RamseteTrajCommand;
-import frc.robot.commands.drive.TTAProfiled;
-import frc.robot.commands.drive.TurnToAngleCommand;
+import frc.robot.commands.*;
+import frc.robot.commands.drive.*;
 import frc.robot.subsystems.*;
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
 
@@ -76,6 +71,9 @@ public class RobotContainer {
     chooser.addOption("Ramsete Trajectory Command", new RamseteTrajCommand(dt));
     chooser.addOption("DTDProfiled", new DTDProfiled(1, dt));
     chooser.addOption("SquarePath", new SquareAuto(dt));
+    chooser.addOption("TopBallAuto", new TopBallAuto(dt));
+    chooser.addOption("MiddleBallAuto", new MiddleBallAuto(dt));
+    chooser.addOption("LowBallAuto", new LowBallAuto(dt));
 
     SmartDashboard.putData(chooser);
   }

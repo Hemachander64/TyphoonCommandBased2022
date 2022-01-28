@@ -24,7 +24,7 @@ public class TTAProfiled extends ProfiledPIDCommand
             this.dt = dt;
             this.angleDegrees = angleDegrees;
         
-            getController().setTolerance(.5);
+            getController().setTolerance(Constants.TTA_TOLERANCE);
             getController().enableContinuousInput(-180, 180);
     }
     
