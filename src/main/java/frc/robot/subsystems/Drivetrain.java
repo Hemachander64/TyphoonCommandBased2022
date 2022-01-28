@@ -180,4 +180,20 @@ public class Drivetrain extends SubsystemBase
 	{
 		return Math.max(lfEncoder.getPosition(), rfEncoder.getPosition());
 	}
+
+	public void brakeMode()
+	{
+		leftFront.setIdleMode(IdleMode.kBrake);
+		leftBack.setIdleMode(IdleMode.kBrake);
+		rightFront.setIdleMode(IdleMode.kBrake);
+		rightBack.setIdleMode(IdleMode.kBrake);
+	}
+
+	public void coastMode()
+	{
+		leftFront.setIdleMode(IdleMode.kCoast);
+		leftBack.setIdleMode(IdleMode.kCoast);
+		rightFront.setIdleMode(IdleMode.kCoast);
+		rightBack.setIdleMode(IdleMode.kCoast);		
+	}
 }

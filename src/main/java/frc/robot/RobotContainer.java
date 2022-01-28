@@ -45,6 +45,7 @@ public class RobotContainer {
     configureButtonBindings();
     //slowMode = richard.getLeftBumper();
     var slowButton = new JoystickButton(driverController, kLeftBumper.value);
+    var brakeButton = new JoystickButton(driverController, kRightBumper.value);
     var shootButton = new JoystickButton(driverController, kA.value);
     var liftUpButton = new POVButton(driverController, 0);
     var liftDownButton = new POVButton(driverController, 180); 
@@ -52,6 +53,10 @@ public class RobotContainer {
     slowButton
       .whileHeld(new RunCommand(() -> dt.setOutput(0.2)))
       .whenReleased(new RunCommand(() -> dt.setOutput(1)));
+    
+    brakeButton
+      .whenPressed(new InstantCommand(dt::brakeMode))
+      .whenReleased(new InstantCommand(dt::coastMode));
       
     // shootButton
     //   .whileHeld(new RunCommand(() -> shooter.setPower(1)))
