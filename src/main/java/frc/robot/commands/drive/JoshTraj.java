@@ -21,11 +21,11 @@ import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
-public class RamseteTrajCommand extends SequentialCommandGroup
+public class JoshTraj extends SequentialCommandGroup
 {
 	Trajectory traj = new Trajectory();
 
-	public RamseteTrajCommand(Drivetrain dt)
+	public JoshTraj(Drivetrain dt)
 	{       
 		var autoVoltageConstraint =
 			new DifferentialDriveVoltageConstraint(
@@ -34,53 +34,20 @@ public class RamseteTrajCommand extends SequentialCommandGroup
 				Drivetrain.kDriveKinematics,
 				10);
 
-		// Create config for trajectory
 		TrajectoryConfig config =
 			new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond,
 								Constants.kMaxAccelerationMetersPerSecondSquared)
-				// Add kinematics to ensure max speed is actually obeyed
 				.setKinematics(Drivetrain.kDriveKinematics)
 				.addConstraint(autoVoltageConstraint);
-				// .setReversed(true);
 
-		// Trajectory traj = TrajectoryGenerator.generateTrajectory(
-		// 	new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
-		// 	List.of(
-		// 		// new Pose2d(0, 1.2, Rotation2d.fromDegrees(0)),
-		// 		// new Pose2d(1.2, 2.4, Rotation2d.fromDegrees(90)),
-		// 		// new Pose2d(2.4, 1.2, Rotation2d.fromDegrees(180)),
-		// 		// new Pose2d(2.4, 0, Rotation2d.fromDegrees(180)),
-		// 		// new Pose2d(2.4, 0, Rotation2d.fromDegrees(0)),
-		// 		// new Pose2d(2.4, 1.2, Rotation2d.fromDegrees(0)),
-		// 		// new Pose2d(1.2, 2.4, Rotation2d.fromDegrees(-90)),
-		// 		// new Pose2d(0, 1.2, Rotation2d.fromDegrees(-180)),
-		// 		// new Pose2d(0, 0, Rotation2d.fromDegrees(-180)),
-		// 		// new Pose2d(0, 0, Rotation2d.fromDegrees(-90)),
-		// 		// new Pose2d(-2.5, 0, Rotation2d.fromDegrees(-90)),
-		// 		// new Pose2d(0, 0, Rotation2d.fromDegrees(-90))
-		// 		new Translation2d(0, 1.2),
-		// 		new Translation2d(1.2, 2.4),
-		// 		new Translation2d(2.4, 1.2),
-		// 		new Translation2d(2.4, 0),
-		// 		new Translation2d(2.4, 0),
-		// 		new Translation2d(2.4, 1.2),
-		// 		new Translation2d(1.2, 2.4),
-		// 		new Translation2d(0, 1.2),
-		// 		new Translation2d(0, 0),
-		// 		new Translation2d(-2.5, 0),
-		// 		new Translation2d(0, 0)
-		// 	),
-		// 	new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
-		// 	config
-		// );
-		String trajectoryJSON = "output/nwwkPrth.wpilib.json";
-
-		try {
-			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-			traj = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-		} catch (IOException ex) {
-			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-		}
+		Trajectory traj = TrajectoryGenerator.generateTrajectory(
+			new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
+			List.of(
+				new Translation2d(0, 1.2)
+			),
+			new Pose2d(0, 2, Rotation2d.fromDegrees(0)),
+			config
+		);
 
 		RamseteCommand ramseteCommand =
 			new RamseteCommand(
@@ -95,7 +62,6 @@ public class RamseteTrajCommand extends SequentialCommandGroup
 				dt::getWheelSpeeds,
 				new PIDController(Constants.kPDriveVel, 0, 0),
 				new PIDController(Constants.kPDriveVel, 0, 0),
-				// RamseteCommand passes volts to the callback
 				dt::tankDriveVolts,
 				dt
 		);

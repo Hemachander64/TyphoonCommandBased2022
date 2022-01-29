@@ -17,6 +17,8 @@ import frc.robot.commands.drive.*;
 import frc.robot.subsystems.*;
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 
@@ -79,9 +81,12 @@ public class RobotContainer {
     chooser.addOption("TopBallAuto", new TopBallAuto(dt));
     chooser.addOption("MiddleBallAuto", new MiddleBallAuto(dt));
     chooser.addOption("LowBallAuto", new LowBallAuto(dt));
+    chooser.addOption("SetWheelSpeeds", new RunCommand(() -> dt.setWheelSpeeds(1,1), dt));
 
     SmartDashboard.putData(chooser);
   }
+
+  
 
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
@@ -102,8 +107,8 @@ public class RobotContainer {
   }
 
   public void disabledInit() {
+    dt.resetEncoders();
     dt.resetOdometry(new Pose2d());
-    dt.resetSensors();
   }
 
   

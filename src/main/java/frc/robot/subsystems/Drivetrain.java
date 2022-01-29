@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -136,12 +138,15 @@ public class Drivetrain extends SubsystemBase
 		SmartDashboard.putNumber("rTicks", rfEncoder.getPosition());
 
 		// Print out the odometry to smartdashboard
-		final var odometryPose = odometry.getPoseMeters();
+		var odometryPose = odometry.getPoseMeters();
 		SmartDashboard.putNumber("odom x", odometryPose.getTranslation().getX());
 		SmartDashboard.putNumber("odom y", odometryPose.getTranslation().getY());
 		SmartDashboard.putNumber("odom heading", odometryPose.getRotation().getDegrees());
 		SmartDashboard.putNumber("gyro raw angle", gyro.getAngle());
 		SmartDashboard.putNumber("dtd dist", getDistanceMeters());
+		SmartDashboard.putNumber("left speeds", getWheelSpeeds().leftMetersPerSecond);
+		SmartDashboard.putNumber("right speeds", getWheelSpeeds().rightMetersPerSecond);
+
 		field.setRobotPose(getPose());
 		odometry.update(gyro.getRotation2d(), lfEncoder.getPosition(), rfEncoder.getPosition());
 	}
@@ -167,7 +172,7 @@ public class Drivetrain extends SubsystemBase
 	public void tankDriveVolts(double leftVolts, double rightVolts)
 	{
 		left.setVoltage(-leftVolts);
-		right.setVoltage(-rightVolts);
+		right.setVoltage(rightVolts);
 		dt.feed();
 	}
 
@@ -196,4 +201,18 @@ public class Drivetrain extends SubsystemBase
 		rightFront.setIdleMode(IdleMode.kCoast);
 		rightBack.setIdleMode(IdleMode.kCoast);		
 	}
+
+	SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter);
+  	PIDController lPid = new PIDController(Constants.kPDriveVel, 0, 0);
+  	PIDController rPid = new PIDController(Constants.kPDriveVel, 0, 0);
+  	
+	public void setWheelSpeeds(double left, double right)
+  	{
+		DifferentialDriveWheelSpeeds wheelSpeedNow = getWheelSpeeds();
+    	double leftVolt  =	lPid.calculate(wheelSpeedNow.leftMetersPerSecond, left) +
+							feedForward.calculate(left);
+    	double rightVolt =  rPid.calculate(wheelSpeedNow.leftMetersPerSecond, right) +
+							feedForward.calculate(right);
+		tankDriveVolts(-leftVolt, rightVolt);
+  	}
 }
