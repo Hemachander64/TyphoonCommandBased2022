@@ -8,13 +8,13 @@ import frc.robot.Constants;
 
 public class Lift extends SubsystemBase 
 {
-    protected CANSparkMax liftMotor = new CANSparkMax(Constants.LIFT_MOTOR_ID, MotorType.kBrushless);
-    protected RelativeEncoder liftEncoder = liftMotor.getEncoder();
+    protected CANSparkMax liftMotor = new CANSparkMax(Constants.LIFT_MOTOR_ID, MotorType.kBrushed);
+   // protected RelativeEncoder liftEncoder = liftMotor.getEncoder();
     
     public Lift()
     {
-        liftEncoder.setPositionConversionFactor(1); //change if needed
-        liftEncoder.setPosition(0); 
+    //    liftEncoder.setPositionConversionFactor(1); //change if needed
+      //  liftEncoder.setPosition(0); 
         liftMotor.burnFlash();
     }
 
@@ -31,7 +31,7 @@ public class Lift extends SubsystemBase
     @Override
     public void periodic() 
     {
-        SmartDashboard.putNumber("Lift Position: ", liftEncoder.getPosition());
+    //    SmartDashboard.putNumber("Lift Position: ", liftEncoder.getPosition());
     }
 }
 

@@ -35,15 +35,15 @@ public class Drivetrain extends SubsystemBase
 {
 	// Create our motors
 
-	CANSparkMax leftFront = new CANSparkMax(Constants.LF_MOTOR_ID, MotorType.kBrushless);
-	CANSparkMax leftBack = new CANSparkMax(Constants.LB_MOTOR_ID, MotorType.kBrushless);
-	CANSparkMax rightFront = new CANSparkMax(Constants.RF_MOTOR_ID, MotorType.kBrushless);
-	CANSparkMax rightBack = new CANSparkMax(Constants.RB_MOTOR_ID, MotorType.kBrushless);
+	CANSparkMax leftFront = new CANSparkMax(Constants.LF_MOTOR_ID, MotorType.kBrushed);
+	CANSparkMax leftBack = new CANSparkMax(Constants.LB_MOTOR_ID, MotorType.kBrushed);
+	CANSparkMax rightFront = new CANSparkMax(Constants.RF_MOTOR_ID, MotorType.kBrushed);
+	CANSparkMax rightBack = new CANSparkMax(Constants.RB_MOTOR_ID, MotorType.kBrushed);
 
-	RelativeEncoder lfEncoder = leftFront.getEncoder();
-	RelativeEncoder lbEncoder = leftBack.getEncoder();
-	RelativeEncoder rfEncoder = rightFront.getEncoder();
-	RelativeEncoder rbEncoder = rightBack.getEncoder();
+//	RelativeEncoder lfEncoder = leftFront.getEncoder();
+//	RelativeEncoder lbEncoder = leftBack.getEncoder();
+//	RelativeEncoder rfEncoder = rightFront.getEncoder();
+//	RelativeEncoder rbEncoder = rightBack.getEncoder();
 
 	MotorControllerGroup left = new MotorControllerGroup(leftFront, leftBack);
 	MotorControllerGroup right = new MotorControllerGroup(rightFront, rightBack);;
@@ -68,6 +68,8 @@ public class Drivetrain extends SubsystemBase
 
 	public Drivetrain()
 	{
+
+		/*
 		lfEncoder.setPositionConversionFactor(0.4788 / 10.71);
 		rfEncoder.setPositionConversionFactor(0.4788 / 10.71);
 		lfEncoder.setVelocityConversionFactor(0.4788 / 10.71);
@@ -77,6 +79,7 @@ public class Drivetrain extends SubsystemBase
 		lbEncoder.setPosition(0);
 		rfEncoder.setPosition(0);
 		rbEncoder.setPosition(0);
+		*/
 
 		leftFront.setIdleMode(IdleMode.kCoast);
 		rightFront.setIdleMode(IdleMode.kCoast);
@@ -120,8 +123,10 @@ public class Drivetrain extends SubsystemBase
 
 	public void resetEncoders()
 	{
+		/*
 		lfEncoder.setPosition(0);
 		rfEncoder.setPosition(0);
+		*/
 	}
 
 	public void resetGyro()
@@ -133,7 +138,14 @@ public class Drivetrain extends SubsystemBase
 	@Override
 	public void periodic()
 	{
+	//	arcadeDrive(1, 0);
+		rightFront.set(1);
+		rightBack.set(1);
+		leftBack.set(1);
+
 		// This method will be called once per scheduler run'
+
+		/*
 		SmartDashboard.putNumber("lTicks", lfEncoder.getPosition());
 		SmartDashboard.putNumber("rTicks", rfEncoder.getPosition());
 
@@ -149,11 +161,13 @@ public class Drivetrain extends SubsystemBase
 
 		field.setRobotPose(getPose());
 		odometry.update(gyro.getRotation2d(), lfEncoder.getPosition(), rfEncoder.getPosition());
+		*/
 	}
 
 	public DifferentialDriveWheelSpeeds getWheelSpeeds()
 	{
-		return new DifferentialDriveWheelSpeeds(lfEncoder.getVelocity(), rfEncoder.getVelocity());
+		return new DifferentialDriveWheelSpeeds();
+		//return new DifferentialDriveWheelSpeeds(lfEncoder.getVelocity(), rfEncoder.getVelocity());
 	}
 
 	public Pose2d getPose()
@@ -183,7 +197,8 @@ public class Drivetrain extends SubsystemBase
 
 	public double getDistanceMeters()
 	{
-		return Math.max(lfEncoder.getPosition(), rfEncoder.getPosition());
+		return 0.0;
+		//return Math.max(lfEncoder.getPosition(), rfEncoder.getPosition());
 	}
 
 	public void brakeMode()

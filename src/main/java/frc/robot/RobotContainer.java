@@ -30,10 +30,10 @@ import edu.wpi.first.math.geometry.Pose2d;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Drivetrain dt = new DrivetrainWithSim();
+  private final Drivetrain dt = new Drivetrain(); // WithSim();
   private final SendableChooser<Command> chooser = new SendableChooser<Command>();
   // private final ShooterWithSim shooter = new ShooterWithSim();
-  // private final Lift lift = new LiftWithSim();
+   private final Lift lift = new Lift();
 
 //  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   boolean slowMode = false;
@@ -60,17 +60,21 @@ public class RobotContainer {
       .whenPressed(new InstantCommand(dt::brakeMode))
       .whenReleased(new InstantCommand(dt::coastMode));
       
+    
+      
     // shootButton
     //   .whileHeld(new RunCommand(() -> shooter.setPower(1)))
     //   .whenReleased(new RunCommand(() -> shooter.stop()));
-    dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()), dt));
+  //  dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()), dt));
     
-    // lift.setDefaultCommand(new RunCommand(() -> lift.off(), lift));
 
 
-    // liftUpButton
-    //   .whileHeld(new RunCommand(() -> lift.on(1.0)))
-    //   .or(liftDownButton.whileHeld(new RunCommand(() -> lift.on(-1.0))));
+
+     lift.setDefaultCommand(new RunCommand(() -> lift.off(), lift));
+
+     liftUpButton
+       .whileHeld(new RunCommand(() -> lift.on(1.0)))
+       .or(liftDownButton.whileHeld(new RunCommand(() -> lift.on(-1.0))));
     
     chooser.setDefaultOption("Drive To Distance", new DriveToDistanceCommand(1, dt));
     chooser.addOption("Turn To Angle", new TurnToAngleCommand(90, dt));

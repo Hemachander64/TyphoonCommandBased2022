@@ -27,7 +27,7 @@ public class LiftWithSim extends Lift {
     liftSim.update(0.020);
 
     // Finally, we set our simulated encoder's readings and simulated battery voltage
-    liftEncoder.setPosition(liftSim.getPositionMeters());
+  //  liftEncoder.setPosition(liftSim.getPositionMeters());
     // SimBattery estimates loaded battery voltages
     RoboRioSim.setVInVoltage(
         BatterySim.calculateDefaultBatteryLoadedVoltage(liftSim.getCurrentDrawAmps()));
