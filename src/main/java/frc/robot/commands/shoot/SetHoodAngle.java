@@ -1,20 +1,19 @@
-package frc.robot.commands.shoot;
+// package frc.robot.commands.shoot;
 
-import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.subsystems.Shooter;
+// import edu.wpi.first.wpilibj2.command.PIDCommand;
+// import frc.robot.subsystems.Shooter;
 
-/*
-public class SetHoodAngle extends PIDCommand //uses PID because angle is a specified position essentially
-{
+
+// public class SetHoodAngle extends PIDCommand //uses PID because angle is a specified position essentially
+// {
     
-    Shooter shooter;
+//     Shooter shooter;
 
-    public SetHoodAngle(double angleDegrees, Shooter shooter)
-    {
-        //pid stuff
-        super()
+//     public SetHoodAngle(double angleDegrees, Shooter shooter)
+//     {
+//         //pid stuff
+//         super(new PID);
 
-        this.shooter = shooter;
-    }
-}
-*/
+//         this.shooter = shooter;
+//     }
+// }

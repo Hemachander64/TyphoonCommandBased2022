@@ -32,7 +32,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain dt = new Drivetrain(); // WithSim();
   private final SendableChooser<Command> chooser = new SendableChooser<Command>();
-  // private final ShooterWithSim shooter = new ShooterWithSim();
+  private final ShooterWithSim shooter = new ShooterWithSim();
    private final Lift lift = new Lift();
 
 //  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -62,10 +62,10 @@ public class RobotContainer {
       
     
       
-    // shootButton
-    //   .whileHeld(new RunCommand(() -> shooter.setPower(1)))
-    //   .whenReleased(new RunCommand(() -> shooter.stop()));
-  //  dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()), dt));
+    shootButton
+      .whileHeld(new RunCommand(() -> shooter.setPower(1)))
+      .whenReleased(new RunCommand(() -> shooter.stop()));
+   dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()), dt));
     
 
 

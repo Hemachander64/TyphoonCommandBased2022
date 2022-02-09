@@ -21,6 +21,7 @@ public class Shooter extends SubsystemBase
     protected CRRFalcon500 leftShooter;
 
     protected CANSparkMax hoodMotor;
+    protected CANSparkMax hoodAngMotor;
     
     public Shooter()
     {
@@ -28,6 +29,7 @@ public class Shooter extends SubsystemBase
         leftShooter = new CRRFalcon500(Constants.LEFT_SHOOTER_MOTOR_ID, true, NeutralMode.Coast, rightShooter);
 
         hoodMotor = new CANSparkMax(Constants.HOOD_MOTOR_ID, MotorType.kBrushed);
+        hoodAngMotor = new CANSparkMax(Constants.HOOD_ANGLE_MOTOR_ID, MotorType.kBrushless);
     }
     
     /**
@@ -62,7 +64,7 @@ public class Shooter extends SubsystemBase
         leftShooter.set(0);
     }
     
-    public void setHoodVelocity(double power)
+    public void setHood(double power)
     {
         hoodMotor.set(power);
     }

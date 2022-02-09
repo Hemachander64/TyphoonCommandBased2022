@@ -9,7 +9,11 @@ import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 
 public class ShooterWithSim extends Shooter
 {
-    private FlywheelSim shootSim = new FlywheelSim(DCMotor.getFalcon500(2), 1, 0.5 * Units.lbsToKilograms(0.74 * 2) * Math.pow(Units.inchesToMeters(4/2), 2));
+    private FlywheelSim shootSim = new FlywheelSim(
+		DCMotor.getFalcon500(2),
+		0.75,
+		0.5 * Units.lbsToKilograms(0.74 * 2) * Math.pow(Units.inchesToMeters(4/2), 2)
+	);
 
 	@Override
 	public void simulationPeriodic()
