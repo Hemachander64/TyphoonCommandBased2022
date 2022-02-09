@@ -61,8 +61,8 @@ public class Shooter extends SubsystemBase
         rightShooter.set(0);
         leftShooter.set(0);
     }
-
-    public void rotateHood(double power)
+    
+    public void setHoodVelocity(double power)
     {
         hoodMotor.set(power);
     }
