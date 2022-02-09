@@ -25,8 +25,10 @@ public final class Constants {
     public static final int RB_MOTOR_ID = 8;
 
     public static final int FEEDER_MOTOR_ID = 0;
+
     public static final int LEFT_SHOOTER_MOTOR_ID = 0;
     public static final int RIGHT_SHOOTER_MOTOR_ID = 0;
+    public static final int HOOD_MOTOR_ID = 69; //CHANGE THIS WHEN READY
     // public static final int LIFT_MOTOR_ID = 9;
     public static final int LIFT_MOTOR_ID = 1;
 

@@ -5,7 +5,10 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,11 +19,15 @@ public class Shooter extends SubsystemBase
 {
     protected CRRFalcon500 rightShooter;
     protected CRRFalcon500 leftShooter;
+
+    protected CANSparkMax hoodMotor;
     
     public Shooter()
     {
         rightShooter = new CRRFalcon500(Constants.RIGHT_SHOOTER_MOTOR_ID, false, NeutralMode.Coast, new PIDGains(10000, 0, 0));
         leftShooter = new CRRFalcon500(Constants.LEFT_SHOOTER_MOTOR_ID, true, NeutralMode.Coast, rightShooter);
+
+        hoodMotor = new CANSparkMax(Constants.HOOD_MOTOR_ID, MotorType.kBrushed);
     }
     
     /**
@@ -53,6 +60,16 @@ public class Shooter extends SubsystemBase
     {
         rightShooter.set(0);
         leftShooter.set(0);
+    }
+
+    public void rotateHood(double power)
+    {
+        hoodMotor.set(power);
+    }
+
+    public void stopHood()
+    {
+        hoodMotor.set(0);
     }
 
     @Override
