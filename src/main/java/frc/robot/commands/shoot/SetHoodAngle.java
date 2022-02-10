@@ -1,6 +1,7 @@
 // package frc.robot.commands.shoot;
 
 // import edu.wpi.first.wpilibj2.command.PIDCommand;
+// import frc.robot.Constants;
 // import frc.robot.subsystems.Shooter;
 
 
@@ -12,7 +13,8 @@
 //     public SetHoodAngle(double angleDegrees, Shooter shooter)
 //     {
 //         //pid stuff
-//         super(new PID);
+//         super(new PIDController(Constants.HOOD_KP, 0, 0),
+//         shooter:getHoodAngle);
 
 //         this.shooter = shooter;
 //     }

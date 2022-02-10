@@ -35,10 +35,10 @@ public class Drivetrain extends SubsystemBase
 {
 	// Create our motors
 
-	CANSparkMax leftFront = new CANSparkMax(Constants.LF_MOTOR_ID, MotorType.kBrushed);
-	CANSparkMax leftBack = new CANSparkMax(Constants.LB_MOTOR_ID, MotorType.kBrushed);
-	CANSparkMax rightFront = new CANSparkMax(Constants.RF_MOTOR_ID, MotorType.kBrushed);
-	CANSparkMax rightBack = new CANSparkMax(Constants.RB_MOTOR_ID, MotorType.kBrushed);
+	CANSparkMax leftFront = new CANSparkMax(Constants.LF_MOTOR_ID, MotorType.kBrushless);
+	CANSparkMax leftBack = new CANSparkMax(Constants.LB_MOTOR_ID, MotorType.kBrushless);
+	CANSparkMax rightFront = new CANSparkMax(Constants.RF_MOTOR_ID, MotorType.kBrushless);
+	CANSparkMax rightBack = new CANSparkMax(Constants.RB_MOTOR_ID, MotorType.kBrushless);
 
 //	RelativeEncoder lfEncoder = leftFront.getEncoder();
 //	RelativeEncoder lbEncoder = leftBack.getEncoder();
@@ -85,6 +85,12 @@ public class Drivetrain extends SubsystemBase
 		rightFront.setIdleMode(IdleMode.kCoast);
 		leftBack.setIdleMode(IdleMode.kCoast);
 		rightBack.setIdleMode(IdleMode.kCoast);
+			
+		leftFront.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
+		rightFront.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
+		rightBack.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
+		leftBack.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
+
 
 		leftFront.setInverted(false);
 		leftBack.setInverted(false);
@@ -139,9 +145,9 @@ public class Drivetrain extends SubsystemBase
 	public void periodic()
 	{
 	//	arcadeDrive(1, 0);
-		rightFront.set(1);
-		rightBack.set(1);
-		leftBack.set(1);
+		// rightFront.set(1);
+		// rightBack.set(1);
+		// leftBack.set(1);
 
 		// This method will be called once per scheduler run'
 
@@ -201,20 +207,30 @@ public class Drivetrain extends SubsystemBase
 		//return Math.max(lfEncoder.getPosition(), rfEncoder.getPosition());
 	}
 
-	public void brakeMode()
+	public void evilMode()
 	{
 		leftFront.setIdleMode(IdleMode.kBrake);
 		leftBack.setIdleMode(IdleMode.kBrake);
 		rightFront.setIdleMode(IdleMode.kBrake);
 		rightBack.setIdleMode(IdleMode.kBrake);
+		leftFront.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
+		rightFront.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
+		leftBack.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
+		rightBack.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
+
 	}
 
-	public void coastMode()
+	public void goodMode()
 	{
 		leftFront.setIdleMode(IdleMode.kCoast);
 		leftBack.setIdleMode(IdleMode.kCoast);
 		rightFront.setIdleMode(IdleMode.kCoast);
-		rightBack.setIdleMode(IdleMode.kCoast);		
+		rightBack.setIdleMode(IdleMode.kCoast);	
+		
+		leftFront.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
+		rightFront.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
+		leftBack.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
+		rightBack.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
 	}
 
 	SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter);

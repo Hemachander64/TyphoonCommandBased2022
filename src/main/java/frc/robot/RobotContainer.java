@@ -32,12 +32,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain dt = new Drivetrain(); // WithSim();
   private final SendableChooser<Command> chooser = new SendableChooser<Command>();
-  private final ShooterWithSim shooter = new ShooterWithSim();
+ // private final ShooterWithSim shooter = new ShooterWithSim();
    private final Lift lift = new Lift();
 
 //  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   boolean slowMode = false;
   XboxController driverController = new XboxController(0);
+  Saitek flightStick = new Saitek(0);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -46,27 +47,27 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     //slowMode = richard.getLeftBumper();
-    var slowButton = new JoystickButton(driverController, kLeftBumper.value);
+    var slowButton = new JoystickButton(driverController, kLeftBumper.value).or(new JoystickButton(flightStick, Saitek.SButtons.kTrigger.ordinal()));
     var brakeButton = new JoystickButton(driverController, kRightBumper.value);
     var shootButton = new JoystickButton(driverController, kA.value);
     var liftUpButton = new POVButton(driverController, 0);
     var liftDownButton = new POVButton(driverController, 180); 
     
     slowButton
-      .whileHeld(new RunCommand(() -> dt.setOutput(0.2)))
-      .whenReleased(new RunCommand(() -> dt.setOutput(1)));
-    
+      .whileActiveContinuous(new RunCommand(() -> dt.setOutput(0.2)))
+      .whenInactive(new InstantCommand(() -> dt.setOutput(1)));
+
     brakeButton
-      .whenPressed(new InstantCommand(dt::brakeMode))
-      .whenReleased(new InstantCommand(dt::coastMode));
+      .whenPressed(new InstantCommand(dt::evilMode))
+      .whenReleased(new InstantCommand(dt::goodMode));
       
     
       
-    shootButton
-      .whileHeld(new RunCommand(() -> shooter.setPower(1)))
-      .whenReleased(new RunCommand(() -> shooter.stop()));
-   dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()), dt));
-    
+  //  shootButton
+//      .whileHeld(new RunCommand(() -> shooter.setPower(1)))
+ //     .whenReleased(new RunCommand(() -> shooter.stop()));
+   //dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-flightStick.getY()-driverController.getLeftY(), flightStick.getZRotation()+driverController.getRightX()), dt));
+    dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()), dt));
 
 
 
