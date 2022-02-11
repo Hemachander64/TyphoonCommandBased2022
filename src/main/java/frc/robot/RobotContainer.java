@@ -48,26 +48,27 @@ public class RobotContainer {
     configureButtonBindings();
     //slowMode = richard.getLeftBumper();
     var slowButton = new JoystickButton(driverController, kLeftBumper.value).or(new JoystickButton(flightStick, Saitek.SButtons.kTrigger.ordinal()));
-    var brakeButton = new JoystickButton(driverController, kRightBumper.value);
+    var defenseButton = new JoystickButton(driverController, kRightBumper.value).or(new JoystickButton(flightStick, Saitek.SButtons.kM.ordinal()));
+    //var defenseButton = new JoystickButton(driverController, kRightBumper.value);
     var shootButton = new JoystickButton(driverController, kA.value);
     var liftUpButton = new POVButton(driverController, 0);
     var liftDownButton = new POVButton(driverController, 180); 
     
     slowButton
-      .whileActiveContinuous(new RunCommand(() -> dt.setOutput(0.2)))
+      .whenActive(new InstantCommand(dt::slowMode))
       .whenInactive(new InstantCommand(() -> dt.setOutput(1)));
 
-    brakeButton
-      .whenPressed(new InstantCommand(dt::evilMode))
-      .whenReleased(new InstantCommand(dt::goodMode));
+    defenseButton
+      .whenActive(new InstantCommand(dt::evilMode))
+      .whenInactive(new InstantCommand(dt::goodMode));
       
     
       
   //  shootButton
 //      .whileHeld(new RunCommand(() -> shooter.setPower(1)))
  //     .whenReleased(new RunCommand(() -> shooter.stop()));
-   //dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-flightStick.getY()-driverController.getLeftY(), flightStick.getZRotation()+driverController.getRightX()), dt));
-    dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()), dt));
+     dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-flightStick.getY()-driverController.getLeftY(), flightStick.getZRotation()+driverController.getRightX()), dt));
+    //dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()), dt));
 
 
 

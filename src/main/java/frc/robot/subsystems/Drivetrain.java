@@ -233,6 +233,16 @@ public class Drivetrain extends SubsystemBase
 		rightBack.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
 	}
 
+	public void slowMode()
+	{
+		leftFront.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
+		rightFront.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
+		leftBack.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
+		rightBack.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
+
+		setOutput(0.2);
+	}
+
 	SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter);
   	PIDController lPid = new PIDController(Constants.kPDriveVel, 0, 0);
   	PIDController rPid = new PIDController(Constants.kPDriveVel, 0, 0);

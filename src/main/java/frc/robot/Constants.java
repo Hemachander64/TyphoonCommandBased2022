@@ -53,8 +53,8 @@ public final class Constants {
     //public static final int FREE_CURRENT_LIMIT  = 10;
     public static final int EVIL_STALL_CURRENT_LIMIT = 60;
     public static final int EVIL_FREE_CURRENT_LIMIT  = 60;
-    public static final int GOOD_STALL_CURRENT_LIMIT = 20;
-    public static final int GOOD_FREE_CURRENT_LIMIT  = 20;
+    public static final int GOOD_STALL_CURRENT_LIMIT = 25;
+    public static final int GOOD_FREE_CURRENT_LIMIT  = 25;
     
     //empirically found from sysID
     // public static final double ksVolts = 0.091189;
