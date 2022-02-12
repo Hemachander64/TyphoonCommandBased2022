@@ -1,15 +1,18 @@
 package frc.robot.commands.shoot;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
 public class StartShooterCommand extends CommandBase {
     double RPM;
     Shooter shooter;
+    Limelight ll;
 
-    public StartShooterCommand(double RPM, Shooter shooter) {
+    public StartShooterCommand(Shooter shooter, Limelight ll) {
         this.shooter = shooter;
-        this.RPM = RPM;
+        this.ll = ll;
+        RPM = calcRPM(ll.getTy());
         addRequirements(shooter);
     }
 
@@ -21,5 +24,10 @@ public class StartShooterCommand extends CommandBase {
     public boolean isFinished()
     {
         return shooter.atSetpoint();
+    }
+
+    public double calcRPM(double tY) 
+    {
+		return 1940.435 - 30.356*tY;
     }
 }

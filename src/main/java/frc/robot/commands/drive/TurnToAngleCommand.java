@@ -19,7 +19,7 @@ public class TurnToAngleCommand extends PIDCommand
         getController().setTolerance(3);    //  the tolerance with which the isFinished() method checks if the PV is within the setpoint
 
         this.dt = dt;
-    }
+    } 
 
     @Override
     public void initialize()
@@ -34,7 +34,8 @@ public class TurnToAngleCommand extends PIDCommand
     
     }
     @Override
-    public void end(boolean interrupted) {
+    public void end(boolean interrupted) 
+    {
         dt.arcadeDrive(0, 0);
     }
 }
