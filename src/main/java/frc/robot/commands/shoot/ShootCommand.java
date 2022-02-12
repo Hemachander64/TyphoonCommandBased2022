@@ -9,18 +9,10 @@ import frc.robot.commands.drive.*;
 import frc.robot.subsystems.*;
 
 public class ShootCommand extends SequentialCommandGroup { 
-    Limelight ll;
-    Shooter shooter;
-    Feeder feeder;
-    Drivetrain dt;
     
     public ShootCommand (Limelight ll, Shooter shooter, Feeder feeder, Drivetrain dt) {
-        this.ll = ll;
-        this.feeder = feeder;
-        this.shooter = shooter;
-        this.dt = dt;
         
-        addRequirements(shooter);
+        addRequirements(shooter, feeder, dt);
 
         addCommands(
             new ParallelCommandGroup(
@@ -28,15 +20,9 @@ public class ShootCommand extends SequentialCommandGroup {
                 new StartShooterCommand(shooter, ll),
                 new SetHoodAngle(shooter, ll)
                 ),
-            new RunCommand(feeder::on, feeder).withTimeout(10),
-            new StopShooterCommand(shooter)
+            new RunCommand(feeder::on, feeder).withTimeout(2),
+            new InstantCommand(shooter::stop, shooter)
         );
 
-        // addCommands (
-        //     new StartShooterCommand(RPM, shooter),
-        //     new RunCommand(feeder::on, feeder).withTimeout(10),
-        //     new InstantCommand(feeder::off, feeder),
-        //     new StopShooterCommand(shooter)
-        // );
     }
 }

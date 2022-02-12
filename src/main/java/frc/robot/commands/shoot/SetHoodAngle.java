@@ -9,12 +9,12 @@ import frc.robot.subsystems.Shooter;
 public class SetHoodAngle extends PIDCommand // uses PID because angle is a specified position essentially
 {
     Shooter shooter;
-    Limelight ll;
+    static Limelight ll;
 
     public SetHoodAngle(Shooter shooter, Limelight ll) {
         super(new PIDController(Constants.HOOD_KP, 0, 0),
                 shooter::getHoodAngle,
-                ll::getTy, 
+                SetHoodAngle::tyToHoodAngle, //TODO: FIX!!
                 shooter::setHoodAngularPower,
                 shooter);
         
@@ -22,6 +22,7 @@ public class SetHoodAngle extends PIDCommand // uses PID because angle is a spec
         this.ll = ll;
 
         getController().setTolerance(3);
+        addRequirements(shooter);
     }
 
     @Override
@@ -35,5 +36,10 @@ public class SetHoodAngle extends PIDCommand // uses PID because angle is a spec
     public void end(boolean interrupted) 
     {
         shooter.setHoodAngularPower(0);
+    }
+
+    private static double tyToHoodAngle()
+    {
+        return ll.getTy() * 4000;
     }
 }

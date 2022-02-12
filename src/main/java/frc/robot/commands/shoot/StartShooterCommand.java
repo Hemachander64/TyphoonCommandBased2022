@@ -28,6 +28,6 @@ public class StartShooterCommand extends CommandBase {
 
     public double calcRPM(double tY) 
     {
-		return 1940.435 - 30.356*tY;
+		return 1940.435 - 30.356*tY; //TODO: TUNE DIS!!!!
     }
 }

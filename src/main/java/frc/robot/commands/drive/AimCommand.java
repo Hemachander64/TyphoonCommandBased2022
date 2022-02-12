@@ -16,7 +16,7 @@ public class AimCommand extends CommandBase
     {
         this.dt = dt;
         this.ll = ll;
-        txController.setTolerance(1);
+        txController.setTolerance(2);
         //tyController.setTolerance(1);
         addRequirements(dt);
     }
