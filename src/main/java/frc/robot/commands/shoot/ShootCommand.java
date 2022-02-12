@@ -10,15 +10,15 @@ import frc.robot.subsystems.*;
 
 public class ShootCommand extends SequentialCommandGroup { 
     
-    public ShootCommand (Limelight ll, Shooter shooter, Feeder feeder, Drivetrain dt) {
+    public ShootCommand (Limelight ll, Shooter shooter, Hood hood, Feeder feeder, Drivetrain dt) {
         
-        addRequirements(shooter, feeder, dt);
+        addRequirements(shooter, feeder, dt, hood, ll);
 
         addCommands(
             new ParallelCommandGroup(
-                new AimCommand(dt, ll),
-                new StartShooterCommand(shooter, ll),
-                new SetHoodAngle(shooter, ll)
+                new AimCommand(dt, ll::getTx),
+                new StartShooterCommand(shooter, ll::getTy),
+                new RunCommand(() -> hood.setHoodAngle(hood.tyToHoodAngle(ll::getTy)), hood)
                 ),
             new RunCommand(feeder::on, feeder).withTimeout(2),
             new InstantCommand(shooter::stop, shooter)
