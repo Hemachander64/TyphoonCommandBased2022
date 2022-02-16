@@ -70,7 +70,7 @@ public class RobotContainer {
       
     
       
-    shootButton.whenPressed(new ShootCommand(ll, shooter, hood, feeder, dt));
+    shootButton.whenPressed(new ShootCommand(ll, shooter, hood, feeder));//, dt));
 
     //  dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-flightStick.getY()-driverController.getLeftY(), flightStick.getZRotation()+driverController.getRightX()), dt));
 
