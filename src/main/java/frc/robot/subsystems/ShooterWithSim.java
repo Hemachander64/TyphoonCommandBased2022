@@ -9,21 +9,26 @@ import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 
 public class ShooterWithSim extends Shooter
 {
-    private FlywheelSim shootSim = new FlywheelSim(
+    private FlywheelSim mainFlyWheelSim = new FlywheelSim(
 		DCMotor.getFalcon500(2),
 		0.75,
 		0.5 * Units.lbsToKilograms(0.74 * 2) * Math.pow(Units.inchesToMeters(4/2), 2)
 	);
 
+	private FlywheelSim hoodSim = new FlywheelSim(DCMotor.getNeo550(1), 1, 0.5); // TODO: change moment of inertia                                                         
+
+
 	@Override
 	public void simulationPeriodic()
 	{
-		shootSim.setInputVoltage(rightShooter.getSimCollection().getMotorOutputLeadVoltage());
-        shootSim.update(0.02);
+		mainFlyWheelSim.setInputVoltage(rightShooter.getSimCollection().getMotorOutputLeadVoltage());
+		hoodSim.setInputVoltage(hoodMotor.get());
+		hoodSim.update(0.02);
+        mainFlyWheelSim.update(0.02);
 		rightShooter.getSimCollection().setIntegratedSensorVelocity(
-			(int) CRRFalcon500.RPMtoTalonUnits(shootSim.getAngularVelocityRPM()));
+			(int) CRRFalcon500.RPMtoTalonUnits(mainFlyWheelSim.getAngularVelocityRPM()));
         
 		RoboRioSim.setVInVoltage(
-			BatterySim.calculateDefaultBatteryLoadedVoltage(shootSim.getCurrentDrawAmps()));
+			BatterySim.calculateDefaultBatteryLoadedVoltage(mainFlyWheelSim.getCurrentDrawAmps()));
 	}
 }
