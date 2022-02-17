@@ -8,6 +8,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +28,11 @@ public class Shooter extends SubsystemBase
         rightShooter = new CRRFalcon500(Constants.RIGHT_SHOOTER_MOTOR_ID, false, NeutralMode.Coast, new PIDGains(10000, 0, 0));
         leftShooter = new CRRFalcon500(Constants.LEFT_SHOOTER_MOTOR_ID, true, NeutralMode.Coast, rightShooter);
 
-        upperFlywheelMotor = new CANSparkMax(Constants.HOOD_MOTOR_ID, MotorType.kBrushed);
+        upperFlywheelMotor = new CANSparkMax(Constants.HOOD_MOTOR_ID, MotorType.kBrushless);
+
+        // upperFlywheelMotor.getPIDController().setP(1);
+        upperFlywheelMotor.getPIDController().setFF(1);
+        upperFlywheelMotor.burnFlash();
     }
     
     /**
@@ -45,12 +50,14 @@ public class Shooter extends SubsystemBase
     {
         rightShooter.set(power);
         leftShooter.set(power);
+        upperFlywheelMotor.set(power);
     }
 
     public void setVelocity(double setpoint) 
     {
         leftShooter.setVelocity(setpoint);
         rightShooter.setVelocity(setpoint);
+        upperFlywheelMotor.getPIDController().setReference(setpoint, ControlType.kVelocity);
     }
 
     /**
