@@ -17,9 +17,10 @@ public class ShootCommand extends SequentialCommandGroup {
         addCommands(
             new ParallelCommandGroup(
                 // new AimCommand(dt, ll::getTx),
-                new StartShooterCommand(shooter, ll::getTy)
-            //    new RunCommand(() -> hood.setHoodAngle(hood.tyToHoodAngle(ll::getTy)), hood)
-                ),
+                new StartShooterCommand(shooter, ll::getTy),
+                // new SetHoodAngleCommand(hood.tyToHoodAngle(ll::getTy), hood)
+                new SetHoodAngleCommand(60, hood)
+            ),
             new RunCommand(feeder::on, feeder).withTimeout(2),
             new InstantCommand(shooter::stop, shooter)
         );

@@ -31,7 +31,7 @@ import edu.wpi.first.math.geometry.Pose2d;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Drivetrain dt = new Drivetrain(); // WithSim();
+  //private final Drivetrain dt = new Drivetrain(); // WithSim();
   private final SendableChooser<Command> chooser = new SendableChooser<Command>();
   private final Hood hood = new Hood();
  // private final ShooterWithSim shooter = new ShooterWithSim();
@@ -42,8 +42,7 @@ public class RobotContainer {
    private final Feeder feeder = new Feeder();
 
 //  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  boolean slowMode = false;
-  XboxController driverController = new XboxController(0);
+  XboxController driverController = new XboxController(1);
   Saitek flightStick = new Saitek(0);
 
   /**

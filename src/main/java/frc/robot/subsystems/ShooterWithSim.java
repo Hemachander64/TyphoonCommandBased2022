@@ -22,7 +22,7 @@ public class ShooterWithSim extends Shooter
 	public void simulationPeriodic()
 	{
 		mainFlyWheelSim.setInputVoltage(rightShooter.getSimCollection().getMotorOutputLeadVoltage());
-		hoodSim.setInputVoltage(hoodMotor.get());
+		hoodSim.setInputVoltage(upperFlywheelMotor.get());
 		hoodSim.update(0.02);
         mainFlyWheelSim.update(0.02);
 		rightShooter.getSimCollection().setIntegratedSensorVelocity(

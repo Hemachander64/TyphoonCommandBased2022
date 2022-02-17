@@ -28,7 +28,7 @@ public class Shooter extends SubsystemBase
         rightShooter = new CRRFalcon500(Constants.RIGHT_SHOOTER_MOTOR_ID, false, NeutralMode.Coast, new PIDGains(10000, 0, 0));
         leftShooter = new CRRFalcon500(Constants.LEFT_SHOOTER_MOTOR_ID, true, NeutralMode.Coast, rightShooter);
 
-        upperFlywheelMotor = new CANSparkMax(Constants.HOOD_MOTOR_ID, MotorType.kBrushed);
+        upperFlywheelMotor = new CANSparkMax(Constants.HOOD_MOTOR_ID, MotorType.kBrushless);
 
         // upperFlywheelMotor.getPIDController().setP(1);
         upperFlywheelMotor.getPIDController().setFF(1);
