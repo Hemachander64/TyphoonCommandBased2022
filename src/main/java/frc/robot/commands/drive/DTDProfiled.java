@@ -26,7 +26,6 @@ public class DTDProfiled extends ProfiledPIDCommand
 
         getController().setTolerance(Constants.DTD_TOLERANCE);
         // getController().setTolerance(0.01);
-        System.out.println("Hello World");
     }
     
     

@@ -50,8 +50,8 @@ public final class Constants {
     public static final double HOOD_KP = 0;
     //public static final int STALL_CURRENT_LIMIT = 10;
     //public static final int FREE_CURRENT_LIMIT  = 10;
-    public static final int EVIL_STALL_CURRENT_LIMIT = 60;
-    public static final int EVIL_FREE_CURRENT_LIMIT  = 60;
+    public static final int EVIL_STALL_CURRENT_LIMIT = 35;
+    public static final int EVIL_FREE_CURRENT_LIMIT  = 35;
     public static final int GOOD_STALL_CURRENT_LIMIT = 25;
     public static final int GOOD_FREE_CURRENT_LIMIT  = 25;
     

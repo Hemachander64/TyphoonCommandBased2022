@@ -79,10 +79,10 @@ public class DrivetrainWithSim extends Drivetrain
 		// rightEncoderSim.setDistance(drivetrainSim.getRightPositionMeters());
 		// rightEncoderSim.setRate(drivetrainSim.getRightVelocityMetersPerSecond());
 
-		// lfEncoder.setPosition(drivetrainSim.getLeftPositionMeters());
-        // lbEncoder.setPosition(drivetrainSim.getLeftPositionMeters());
-        // rfEncoder.setPosition(drivetrainSim.getRightPositionMeters());
-        // rbEncoder.setPosition(drivetrainSim.getRightPositionMeters());
+		leftFront.getEncoder().setPosition(drivetrainSim.getLeftPositionMeters());
+        leftBack.getEncoder().setPosition(drivetrainSim.getLeftPositionMeters());
+        rightFront.getEncoder().setPosition(drivetrainSim.getRightPositionMeters());
+        rightBack.getEncoder().setPosition(drivetrainSim.getRightPositionMeters());
 
 		//gyroSim.setAngle(-drivetrainSim.getHeading().getDegrees());
         angle.set(-drivetrainSim.getHeading().getDegrees());
