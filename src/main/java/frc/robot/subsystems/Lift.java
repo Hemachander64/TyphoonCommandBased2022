@@ -13,12 +13,14 @@ public class Lift extends SubsystemBase
     
     public void on(double output)
     {
-        liftMotor.set(output);
+        leftLiftMotor.set(output);
+        rightLiftMotor.set(output);
     }
 
     public void off()
     {
-        liftMotor.set(0);
+        leftLiftMotor.set(0);
+        rightLiftMotor.set(0);
     }
 }
 
