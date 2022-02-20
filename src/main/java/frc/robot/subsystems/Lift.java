@@ -8,16 +8,9 @@ import frc.robot.Constants;
 
 public class Lift extends SubsystemBase 
 {
-    protected CANSparkMax liftMotor = new CANSparkMax(Constants.LIFT_MOTOR_ID, MotorType.kBrushed);
-   // protected RelativeEncoder liftEncoder = liftMotor.getEncoder();
+    protected CANSparkMax leftLiftMotor = new CANSparkMax(Constants.LEFT_LIFT_MOTOR_ID, MotorType.kBrushed);
+    protected CANSparkMax rightLiftMotor = new CANSparkMax(Constants.RIGHT_LIFT_MOTOR_ID, MotorType.kBrushed);
     
-    public Lift()
-    {
-    //    liftEncoder.setPositionConversionFactor(1); //change if needed
-      //  liftEncoder.setPosition(0); 
-        liftMotor.burnFlash();
-    }
-
     public void on(double output)
     {
         liftMotor.set(output);
@@ -26,12 +19,6 @@ public class Lift extends SubsystemBase
     public void off()
     {
         liftMotor.set(0);
-    }
-
-    @Override
-    public void periodic() 
-    {
-    //    SmartDashboard.putNumber("Lift Position: ", liftEncoder.getPosition());
     }
 }
 
