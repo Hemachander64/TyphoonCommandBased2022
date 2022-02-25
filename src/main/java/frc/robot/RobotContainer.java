@@ -31,11 +31,11 @@ public class RobotContainer {
   private final Drivetrain dt = new DrivetrainWithSim();
   private final SendableChooser<Command> chooser = new SendableChooser<Command>();
   private final Hood hood = new Hood();
-  private final Shooter shooter = new ShooterWithSim();
-   private final Lift lift = new Lift();
-   
-   private final Limelight ll = new Limelight();
-   private final Feeder feeder = new Feeder();
+  // private final Shooter shooter = new ShooterWithSim();
+  private final Lift lift = new Lift();
+  
+  private final Limelight ll = new Limelight();
+  private final Feeder feeder = new Feeder();
 
 //  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   XboxController driverController = new XboxController(1);
@@ -65,7 +65,7 @@ public class RobotContainer {
       
     
       
-    shootButton.whenPressed(new ShootCommand(ll, shooter, hood, feeder));//, dt));
+    // shootButton.whenPressed(new ShootCommand(ll, shooter, hood, feeder));//, dt));
 
       dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-flightStick.getY()-driverController.getLeftY(), flightStick.getZRotation()+driverController.getRightX()), dt));
 
@@ -74,8 +74,8 @@ public class RobotContainer {
       lift.setDefaultCommand(new RunCommand(() -> lift.off(), lift));
 
       liftUpButton
-        .whileHeld(new RunCommand(() -> lift.on(1.0)))
-        .or(liftDownButton.whileHeld(new RunCommand(() -> lift.on(-1.0))));
+        .whileHeld(new RunCommand(() -> lift.on(0.5)))
+        .or(liftDownButton.whileHeld(new RunCommand(() -> lift.on(-0.5))));
     
      chooser.setDefaultOption("Drive To Distance", new DriveToDistanceCommand(1, dt));
      chooser.addOption("Turn To Angle", new TurnToAngleCommand(90, dt));

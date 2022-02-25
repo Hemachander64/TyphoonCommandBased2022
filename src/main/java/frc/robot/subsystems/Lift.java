@@ -8,9 +8,21 @@ import frc.robot.Constants;
 
 public class Lift extends SubsystemBase 
 {
-    protected CANSparkMax leftLiftMotor = new CANSparkMax(Constants.LEFT_LIFT_MOTOR_ID, MotorType.kBrushed);
-    protected CANSparkMax rightLiftMotor = new CANSparkMax(Constants.RIGHT_LIFT_MOTOR_ID, MotorType.kBrushed);
+    protected CANSparkMax leftLiftMotor = new CANSparkMax(Constants.LEFT_LIFT_MOTOR_ID, MotorType.kBrushless);
+    protected CANSparkMax rightLiftMotor = new CANSparkMax(Constants.RIGHT_LIFT_MOTOR_ID, MotorType.kBrushless);
     
+    public Lift()
+    {
+        leftLiftMotor.restoreFactoryDefaults();
+        rightLiftMotor.restoreFactoryDefaults();
+
+        leftLiftMotor.setInverted(false);
+        rightLiftMotor.setInverted(false);
+
+        leftLiftMotor.burnFlash();
+        rightLiftMotor.burnFlash();
+    }
+
     public void on(double output)
     {
         leftLiftMotor.set(output);

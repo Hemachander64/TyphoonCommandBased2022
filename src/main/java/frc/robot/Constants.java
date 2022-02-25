@@ -21,17 +21,17 @@ public final class Constants {
     public static final int LF_MOTOR_ID = 1;
     public static final int LB_MOTOR_ID = 5;
     public static final int RF_MOTOR_ID = 7;
-    public static final int RB_MOTOR_ID = 8;
+    public static final int RB_MOTOR_ID = 3;
 
     public static final int FEEDER_MOTOR_ID = 0;
 
     public static final int LEFT_SHOOTER_MOTOR_ID = 14;
     public static final int RIGHT_SHOOTER_MOTOR_ID = 16;
-    public static final int HOOD_MOTOR_ID = 3; //TODO: CHANGE THIS WHEN READY
-    public static final int HOOD_ANGLE_MOTOR_ID = 10; //TODO: change THIS!!!!!
+    public static final int HOOD_MOTOR_ID = 410; //TODO: CHANGE THIS WHEN READY
+    public static final int HOOD_ANGLE_MOTOR_ID = 420; //TODO: change THIS!!!!!
     // public static final int LIFT_MOTOR_ID = 9;
-    public static final int LEFT_LIFT_MOTOR_ID = 420;
-    public static final int RIGHT_LIFT_MOTOR_ID = 421;
+    public static final int LEFT_LIFT_MOTOR_ID = 10;
+    public static final int RIGHT_LIFT_MOTOR_ID = 8;
 
     public static final int INTAKE_MOTOR_ID = 11;
     

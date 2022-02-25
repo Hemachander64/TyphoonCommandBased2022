@@ -67,6 +67,8 @@ public class Shooter extends SubsystemBase
     {
         rightShooter.set(0);
         leftShooter.set(0);
+
+        upperFlywheelMotor.set(0);
     }
 
     @Override
