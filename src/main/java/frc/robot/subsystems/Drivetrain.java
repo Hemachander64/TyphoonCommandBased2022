@@ -40,10 +40,10 @@ public class Drivetrain extends SubsystemBase
 	CANSparkMax rightFront = new CANSparkMax(Constants.RF_MOTOR_ID, MotorType.kBrushless);
 	CANSparkMax rightBack = new CANSparkMax(Constants.RB_MOTOR_ID, MotorType.kBrushless);
 
-//	RelativeEncoder lfEncoder = leftFront.getEncoder();
-//	RelativeEncoder lbEncoder = leftBack.getEncoder();
-//	RelativeEncoder rfEncoder = rightFront.getEncoder();
-//	RelativeEncoder rbEncoder = rightBack.getEncoder();
+	RelativeEncoder lfEncoder = leftFront.getEncoder();
+	RelativeEncoder lbEncoder = leftBack.getEncoder();
+	RelativeEncoder rfEncoder = rightFront.getEncoder();
+	RelativeEncoder rbEncoder = rightBack.getEncoder();
 
 	MotorControllerGroup left = new MotorControllerGroup(leftFront, leftBack);
 	MotorControllerGroup right = new MotorControllerGroup(rightFront, rightBack);;
@@ -103,6 +103,7 @@ public class Drivetrain extends SubsystemBase
 		rightBack.burnFlash();
 
 		SmartDashboard.putData(field);
+		setOutput(1);
 	}
 
 	public void arcadeDrive(double xSpeed, double zRotation)
@@ -129,10 +130,8 @@ public class Drivetrain extends SubsystemBase
 
 	public void resetEncoders()
 	{
-		/*
-		lfEncoder.setPosition(0);
-		rfEncoder.setPosition(0);
-		*/
+		// lfEncoder.setPosition(0);
+		// rfEncoder.setPosition(0);
 	}
 
 	public void resetGyro()
@@ -144,11 +143,6 @@ public class Drivetrain extends SubsystemBase
 	@Override
 	public void periodic()
 	{
-	//	arcadeDrive(1, 0);
-		// rightFront.set(1);
-		// rightBack.set(1);
-		// leftBack.set(1);
-
 		// This method will be called once per scheduler run'
 
 		/*
@@ -231,6 +225,8 @@ public class Drivetrain extends SubsystemBase
 		rightFront.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
 		leftBack.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
 		rightBack.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
+		
+	
 	}
 
 	public void slowMode()

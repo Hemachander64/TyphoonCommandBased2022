@@ -2,7 +2,6 @@ package frc.robot.commands.shoot;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
@@ -10,7 +9,6 @@ public class StartShooterCommand2 extends CommandBase {
     double power;
     Shooter shooter;
     DoubleSupplier tyGetter;
-    Timer timer = new Timer();
 
     public StartShooterCommand2(Shooter shooter, DoubleSupplier tyGetter) {
         this.shooter = shooter;
@@ -19,12 +17,6 @@ public class StartShooterCommand2 extends CommandBase {
         addRequirements(shooter);
     }
 
-    @Override
-    public void initialize()
-    {
-        timer.reset();
-        timer.start();
-    }
     public void execute()
     {
         shooter.setPower(power);
@@ -32,7 +24,9 @@ public class StartShooterCommand2 extends CommandBase {
     
     public boolean isFinished()
     {
-        return timer.get() > 2;
+        double setpoint = 1000, tolerance = 50;
+
+        return Math.abs(setpoint - shooter.getVelocity()) <= tolerance;
     }
 
     public double calcPower(double tY) 

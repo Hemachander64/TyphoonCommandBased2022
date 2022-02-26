@@ -21,11 +21,11 @@ public class ShooterWithSim extends Shooter
 	@Override
 	public void simulationPeriodic()
 	{
-		mainFlyWheelSim.setInputVoltage(rightShooter.getSimCollection().getMotorOutputLeadVoltage());
+		mainFlyWheelSim.setInputVoltage(masterShoot.getSimCollection().getMotorOutputLeadVoltage());
 		hoodSim.setInputVoltage(upperFlywheelMotor.get());
 		hoodSim.update(0.02);
         mainFlyWheelSim.update(0.02);
-		rightShooter.getSimCollection().setIntegratedSensorVelocity(
+		masterShoot.getSimCollection().setIntegratedSensorVelocity(
 			(int) CRRFalcon500.RPMtoTalonUnits(mainFlyWheelSim.getAngularVelocityRPM()));
         
 		RoboRioSim.setVInVoltage(

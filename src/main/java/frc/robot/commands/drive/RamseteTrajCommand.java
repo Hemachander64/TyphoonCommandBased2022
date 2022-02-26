@@ -2,19 +2,14 @@ package frc.robot.commands.drive;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+// import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+// import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.*;
@@ -27,21 +22,21 @@ public class RamseteTrajCommand extends SequentialCommandGroup
 
 	public RamseteTrajCommand(Drivetrain dt)
 	{       
-		var autoVoltageConstraint =
-			new DifferentialDriveVoltageConstraint(
-				new SimpleMotorFeedforward(Constants.ksVolts, 
-											Constants.kvVoltSecondsPerMeter),
-				Drivetrain.kDriveKinematics,
-				10);
+		// var autoVoltageConstraint =
+		// 	new DifferentialDriveVoltageConstraint(
+		// 		new SimpleMotorFeedforward(Constants.ksVolts, 
+		// 									Constants.kvVoltSecondsPerMeter),
+		// 		Drivetrain.kDriveKinematics,
+		// 		10);
 
 		// Create config for trajectory
-		TrajectoryConfig config =
-			new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond,
-								Constants.kMaxAccelerationMetersPerSecondSquared)
-				// Add kinematics to ensure max speed is actually obeyed
-				.setKinematics(Drivetrain.kDriveKinematics)
-				.addConstraint(autoVoltageConstraint);
-				// .setReversed(true);
+		// TrajectoryConfig config =
+		// 	new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond,
+		// 						Constants.kMaxAccelerationMetersPerSecondSquared)
+		// 		// Add kinematics to ensure max speed is actually obeyed
+		// 		.setKinematics(Drivetrain.kDriveKinematics)
+		// 		.addConstraint(autoVoltageConstraint);
+		// 		// .setReversed(true);
 
 		// Trajectory traj = TrajectoryGenerator.generateTrajectory(
 		// 	new Pose2d(0, 0, Rotation2d.fromDegrees(0)),

@@ -1,11 +1,11 @@
 package frc.robot.subsystems;
-import com.revrobotics.REVPhysicsSim;
+// import com.revrobotics.REVPhysicsSim;
 
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.simulation.BatterySim;
-import edu.wpi.first.wpilibj.simulation.ElevatorSim;
-import edu.wpi.first.wpilibj.simulation.RoboRioSim;
+// import edu.wpi.first.math.system.plant.DCMotor;
+// import edu.wpi.first.wpilibj.RobotController;
+// import edu.wpi.first.wpilibj.simulation.BatterySim;
+// import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+// import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 
 // public class LiftWithSim extends Lift {
 

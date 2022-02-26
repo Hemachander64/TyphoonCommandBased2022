@@ -9,14 +9,14 @@ import frc.robot.subsystems.*;
 
 public class ShootCommand2 extends SequentialCommandGroup { 
     
-    public ShootCommand2 (Limelight ll, Shooter shooter, Hood hood, Feeder feeder){ //, Drivetrain dt) {
+    public ShootCommand2 (Limelight ll, Shooter shooter, Hood hood, Feeder feeder, Drivetrain dt){ //, Drivetrain dt) {
         
-        // addRequirements(shooter, feeder, dt, hood, ll);
-        addRequirements(shooter, feeder, hood, ll);
+        addRequirements(shooter, feeder, dt, hood, ll);
+        // addRequirements(shooter, feeder, hood, ll);
 
         addCommands(
             new ParallelCommandGroup(
-                // new AimCommand(dt, ll::getTx),
+                new AimCommand(dt, ll::getTx),
                 new StartShooterCommand2(shooter, ll::getTy),
                 new SetHoodAngleCommand(hood.tyToHoodAngle(ll::getTy), hood)
                 ),

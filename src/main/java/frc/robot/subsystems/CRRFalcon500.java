@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
-import frc.robot.Constants.PIDGains;
 
     // pro tip when reading this class: minimize methods you don't want to read
     // shortcut is ctrl+k, then ctrl+0 to fold everything
@@ -13,6 +12,22 @@ import frc.robot.Constants.PIDGains;
 public class CRRFalcon500 extends WPI_TalonFX
 {
     // YOU CAN NEVER HAVE ENOUGH CONSTRUCTOR OVERLOADS, MY FRIEND - Josh, 2021
+
+    /**
+     * Stores PID gain constants.
+     * <p> Usage: new PIDGains(kP, kI, kD) passed as an argument, with kP as your P constant and so on.
+     */
+    public static class PIDGains
+    {
+        public double kP, kI, kD;
+        
+        public PIDGains(double kP, double kI, double kD)
+        {
+            this.kP = kP;
+            this.kI = kI;
+            this.kD = kD;
+        }
+    }
 
     /**
      * Constructs a Falcon 500.

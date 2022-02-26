@@ -5,34 +5,31 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.PIDGains;
 
 public class Shooter extends SubsystemBase
 {
-    protected CRRFalcon500 rightShooter;
-    protected CRRFalcon500 leftShooter;
-
+    protected CRRFalcon500 masterShoot;
+    protected CRRFalcon500 slaveShoot;
     protected CANSparkMax upperFlywheelMotor;
+
+    protected PIDController flywheelPID = new PIDController(Constants.KP_SHOOT, 0, Constants.KD_SHOOT);;
+    protected SimpleMotorFeedforward flywheelFF = new SimpleMotorFeedforward(Constants.KS_SHOOT, Constants.KV_SHOOT);
+    protected double setpoint;
     
     public Shooter()
     {
-        rightShooter = new CRRFalcon500(Constants.RIGHT_SHOOTER_MOTOR_ID, false, NeutralMode.Coast, new PIDGains(10000, 0, 0));
-        leftShooter = new CRRFalcon500(Constants.LEFT_SHOOTER_MOTOR_ID, true, NeutralMode.Coast, rightShooter);
-
+        masterShoot = new CRRFalcon500(Constants.RIGHT_SHOOTER_MOTOR_ID, true, NeutralMode.Coast);
+        slaveShoot = new CRRFalcon500(Constants.LEFT_SHOOTER_MOTOR_ID, false, NeutralMode.Coast, masterShoot);
         upperFlywheelMotor = new CANSparkMax(Constants.HOOD_MOTOR_ID, MotorType.kBrushless);
-
-        // upperFlywheelMotor.getPIDController().setP(1);
-        upperFlywheelMotor.getPIDController().setFF(1);
-        upperFlywheelMotor.burnFlash();
     }
     
     /**
@@ -42,22 +39,28 @@ public class Shooter extends SubsystemBase
      */
     public boolean atSetpoint()
     {
-        double tolerance = 50;
-        return rightShooter.atSetpoint(tolerance);
+        // return masterShoot.atSetpoint(Constants.SHOOT_TOLERANCE);
+        return Math.abs(setpoint - masterShoot.getVelocity()) <= Constants.SHOOT_TOLERANCE;
     }
 
     public void setPower(double power)
     {
-        rightShooter.set(power);
-        leftShooter.set(power);
+        masterShoot.set(power);
         upperFlywheelMotor.set(power);
     }
 
     public void setVelocity(double setpoint) 
     {
-        leftShooter.setVelocity(setpoint);
-        rightShooter.setVelocity(setpoint);
-        upperFlywheelMotor.getPIDController().setReference(setpoint, ControlType.kVelocity);
+        // leftShooter.setVelocity(setpoint);
+        // rightShooter.setVelocity(setpoint);
+        // upperFlywheelMotor.getPIDController().setReference(setpoint, ControlType.kVelocity);
+        this.setpoint = setpoint;
+        
+        double output = flywheelPID.calculate(getVelocity(), setpoint) + 
+                        flywheelFF.calculate(setpoint);
+
+        masterShoot.setVoltage(output);
+        upperFlywheelMotor.setVoltage(output);
     }
 
     /**
@@ -65,8 +68,8 @@ public class Shooter extends SubsystemBase
     */
     public void stop()
     {
-        rightShooter.set(0);
-        leftShooter.set(0);
+        masterShoot.set(0);
+        slaveShoot.set(0);
 
         upperFlywheelMotor.set(0);
     }
@@ -74,6 +77,11 @@ public class Shooter extends SubsystemBase
     @Override
     public void periodic() 
     {
-        SmartDashboard.putNumber("Shewter Speeeeeeeed", rightShooter.getVelocity());
+        SmartDashboard.putNumber("Shewter Speeeeeeeed", masterShoot.getVelocity());
     }
+
+	public double getVelocity()
+	{
+		return masterShoot.getVelocity();
+	}
 }
