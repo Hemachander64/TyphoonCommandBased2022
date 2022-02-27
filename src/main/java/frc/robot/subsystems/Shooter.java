@@ -88,7 +88,7 @@ public class Shooter extends SubsystemBase
     public double calcDistanceMeters(double ty)
     {
         // https://docs.limelightvision.io/en/latest/cs_estimating_distance.html
-        double h2 = 2.6416, h1 = 0.5116, a1 = Math.toRadians(15), a2 = ty;    //  TODO: measure a1, the limelight mounting angle from horizontal
+        double h2 = 2.6416, h1 = 0.5116, a1 = Math.toRadians(15), a2 = Math.toRadians(ty);    //  TODO: measure a1, the limelight mounting angle from horizontal
         
         double d = (h2 - h1) / Math.tan(a1 + a2);
 
