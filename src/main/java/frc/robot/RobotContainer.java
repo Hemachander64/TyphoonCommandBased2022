@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.*;
@@ -18,7 +19,7 @@ import frc.robot.commands.shoot.*;
 import frc.robot.subsystems.*;
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
 
-import edu.wpi.first.math.geometry.Pose2d;
+// import edu.wpi.first.math.geometry.Pose2d;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -35,37 +36,42 @@ public class RobotContainer
   private final Shooter shooter = new Shooter();
   private final Lift lift = new Lift();
   private final Drivetrain dt = new Drivetrain();
-
-  private final Limelight ll = new Limelight();
   private final Feeder feeder = new Feeder();
+  private final Intake intake = new Intake();
+  private final Limelight ll = new Limelight();
+  
 
-  // private final ExampleCommand m_autoCommand = new
-  // ExampleCommand(m_exampleSubsystem);
-  XboxController driverController = new XboxController(1);
   Saitek flightStick = new Saitek(0);
+  XboxController driverController = new XboxController(1);
+  XboxController operatorController = new XboxController(2);
+
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer()
   {
-    // Configure the button bindings
-    configureButtonBindings();
+    // TODO: write terminal autos
+    var rumbleOnCommand = new RunCommand(() -> operatorController.setRumble(RumbleType.kLeftRumble, 1.0)) // TODO: use this
+      .alongWith(new RunCommand(() -> operatorController.setRumble(RumbleType.kRightRumble, 1.0)));
+    
+    var rumbleOffCommand = new RunCommand(() -> operatorController.setRumble(RumbleType.kLeftRumble, 0.0))
+      .alongWith(new RunCommand(() -> operatorController.setRumble(RumbleType.kRightRumble, 0.0)));
 
     var slowButton = new JoystickButton(driverController, kLeftBumper.value)
         .or(new JoystickButton(flightStick, Saitek.SButtons.kTrigger.ordinal()));
     var defenseButton = new JoystickButton(driverController, kRightBumper.value)
         .or(new JoystickButton(flightStick, Saitek.SButtons.kM.ordinal()));
 
-    var shootButton = new JoystickButton(driverController, kA.value);
-    var liftUpButton = new POVButton(driverController, 0);
-    var liftDownButton = new POVButton(driverController, 180);
+    var shootButton = new JoystickButton(operatorController, kA.value);
+    var liftUpButton = new POVButton(operatorController, 0);
+    var liftDownButton = new POVButton(operatorController, 180);
 
     slowButton.whenActive(new InstantCommand(dt::slowMode)).whenInactive(new InstantCommand(() -> dt.setOutput(1)));
 
     //defenseButton.whenActive(new InstantCommand(dt::evilMode)).whenInactive(new InstantCommand(dt::goodMode));
 
-    shootButton.whenPressed(new ShootCommand(ll, shooter, hood, feeder));// , dt));
+    shootButton.whenPressed(new ShootUpperHub(ll, shooter, hood, feeder, dt));
 
     dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-flightStick.getY() - driverController.getLeftY(),
         flightStick.getZRotation() + driverController.getRightX()), dt));
@@ -75,28 +81,19 @@ public class RobotContainer
     liftUpButton.whileHeld(new RunCommand(() -> lift.on(0.5)))
         .or(liftDownButton.whileHeld(new RunCommand(() -> lift.on(-0.5))));
 
-    chooser.setDefaultOption("Drive To Distance", new DriveToDistanceCommand(1, dt));
+    chooser.setDefaultOption("TopBallAuto", new TopBallAuto(ll, shooter, hood, feeder, intake, dt));
+    chooser.addOption("MiddleBallAuto", new MiddleBallAuto(ll, shooter, hood, feeder, intake, dt));
+    chooser.addOption("LowBallAuto", new LowBallAuto(ll, shooter, hood, feeder, intake, dt));
+    chooser.addOption("Drive To Distance", new DriveToDistanceCommand(1, dt));
     chooser.addOption("Turn To Angle", new TurnToAngleCommand(90, dt));
-    chooser.addOption("TTAProfiled", new TTAProfiled(90, dt));
-    chooser.addOption("Ramsete Trajectory Command", new RamseteTrajCommand(dt));
     chooser.addOption("DTDProfiled", new DTDProfiled(1, dt));
+    chooser.addOption("TTAProfiled", new TTAProfiled(90, dt));
     chooser.addOption("SquarePath", new SquareAuto(dt));
-    chooser.addOption("TopBallAuto", new TopBallAuto(dt));
-    chooser.addOption("MiddleBallAuto", new MiddleBallAuto(dt));
-    chooser.addOption("LowBallAuto", new LowBallAuto(dt));
+    chooser.addOption("Ramsete Trajectory Command", new RamseteTrajCommand(dt));
     chooser.addOption("SetWheelSpeeds", new RunCommand(() -> dt.setWheelSpeeds(1, 1), dt));
 
     SmartDashboard.putData(chooser);
   }
-
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by instantiating a {@link GenericHID} or one of its subclasses
-   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings()
-  {}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -112,7 +109,7 @@ public class RobotContainer
   {
     shooter.stop();
     dt.resetEncoders();
-    dt.resetOdometry(new Pose2d());
+    // dt.resetOdometry(new Pose2d()); // we aren't using odometry at waco
   }
 
 }

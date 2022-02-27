@@ -81,13 +81,12 @@ public final class Constants {
             public static final double kMaxAccelerationMetersPerSecondSquared = 3.0 / 3;
     //#region Shooter Constants
         //#region Shooter PIDF Constants
-            public static final double SHOOT_TOLERANCE = 10; // TODO: tune the heck out of this
+            public static final double SHOOT_TOLERANCE = 10;
 
-            public static final double KP_SHOOT = 0;
-            public static final double KD_SHOOT = 0;
+            public static final double KP_SHOOT = 0.0075;
             
             public static final double KS_SHOOT = 0.66;
-            public static final double KV_SHOOT = 0.001625;
+            public static final double KV_SHOOT = 0.00165;
         //#endregion Shooter Constants
 
         //#region Shooter IDs
@@ -95,5 +94,9 @@ public final class Constants {
             public static final int RIGHT_SHOOTER_MOTOR_ID = 14;
         //#endregion Shooter IDs
     //#endregion Shooter Constants
+
+    //#region LED Constants
+        public static final int LED_PWM_PORT = 0;
+    //#endregion LED Constants
 }
 

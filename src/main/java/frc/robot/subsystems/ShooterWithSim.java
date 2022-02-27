@@ -15,7 +15,7 @@ public class ShooterWithSim extends Shooter
 		0.5 * Units.lbsToKilograms(0.74 * 2) * Math.pow(Units.inchesToMeters(4/2), 2)
 	);
 
-	private FlywheelSim hoodSim = new FlywheelSim(DCMotor.getNeo550(1), 1, 0.5); // TODO: change moment of inertia                                                         
+	private FlywheelSim hoodSim = new FlywheelSim(DCMotor.getNeo550(1), 1, 0.000614543272);                                                       
 
 
 	@Override

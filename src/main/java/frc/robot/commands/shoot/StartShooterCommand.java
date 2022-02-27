@@ -8,13 +8,18 @@ import frc.robot.subsystems.Shooter;
 public class StartShooterCommand extends CommandBase {
     double RPM;
     Shooter shooter;
-    DoubleSupplier tyGetter;
+    DoubleSupplier rpmGetter;
 
-    public StartShooterCommand(Shooter shooter, DoubleSupplier tyGetter) {
+    public StartShooterCommand(Shooter shooter, DoubleSupplier rpmGetter) {
         this.shooter = shooter;
-        this.tyGetter = tyGetter;
-        RPM = calcRPM(tyGetter.getAsDouble());
+        this.rpmGetter = rpmGetter;
         addRequirements(shooter);
+    }
+
+    @Override
+    public void initialize()
+    {
+        RPM = rpmGetter.getAsDouble();
     }
 
     public void execute()
@@ -25,10 +30,5 @@ public class StartShooterCommand extends CommandBase {
     public boolean isFinished()
     {
         return shooter.atSetpoint();
-    }
-
-    public double calcRPM(double tY) 
-    {
-		return 1940.435 - 30.356*tY; //TODO: TUNE DIS!!!!
     }
 }

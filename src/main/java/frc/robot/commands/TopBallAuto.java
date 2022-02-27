@@ -1,17 +1,21 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.drive.DTDProfiled;
-import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.commands.drive.*;
+import frc.robot.commands.shoot.*;
+import frc.robot.subsystems.*;
 
 public class TopBallAuto extends SequentialCommandGroup
 {
-	public TopBallAuto(Drivetrain dt)
+	public TopBallAuto(Limelight ll, Shooter shooter, Hood hood, Feeder feeder, Intake intake, Drivetrain dt)
 	{
 		addCommands
 		(
 			new DTDProfiled(2.274, dt),
-            new DTDProfiled(-2.274, dt)
+			new RunCommand(intake::on, intake).withTimeout(2),
+			new InstantCommand(intake::off, intake),
+            // new DTDProfiled(-2.274, dt),
+			new ShootUpperHub(ll, shooter, hood, feeder, dt)
 		);
 	}
 }

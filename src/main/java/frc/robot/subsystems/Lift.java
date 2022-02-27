@@ -15,7 +15,7 @@ public class Lift extends SubsystemBase
         rightLiftMotor.restoreFactoryDefaults();
 
         leftLiftMotor.setInverted(false);
-        rightLiftMotor.setInverted(false);
+        rightLiftMotor.setInverted(true);
 
         leftLiftMotor.burnFlash();
         rightLiftMotor.burnFlash();
@@ -23,7 +23,7 @@ public class Lift extends SubsystemBase
 
     public void on(double output)
     {
-    //    leftLiftMotor.set(output);
+        leftLiftMotor.set(output);
         rightLiftMotor.set(output);
     }
 

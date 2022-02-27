@@ -7,7 +7,6 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase
 {
-
     WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_ID);
     
     public void off()

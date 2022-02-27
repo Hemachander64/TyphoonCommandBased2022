@@ -9,8 +9,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.controller.*;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,7 +21,7 @@ public class Shooter extends SubsystemBase
     protected CRRFalcon500 slaveShoot;
     protected CANSparkMax upperFlywheelMotor;
 
-    protected PIDController flywheelPID = new PIDController(Constants.KP_SHOOT, 0, Constants.KD_SHOOT);;
+    protected BangBangController bang = new BangBangController(Constants.SHOOT_TOLERANCE);
     protected SimpleMotorFeedforward flywheelFF = new SimpleMotorFeedforward(Constants.KS_SHOOT, Constants.KV_SHOOT);
     protected double setpoint;
     
@@ -39,8 +39,7 @@ public class Shooter extends SubsystemBase
      */
     public boolean atSetpoint()
     {
-        // return masterShoot.atSetpoint(Constants.SHOOT_TOLERANCE);
-        return Math.abs(setpoint - masterShoot.getVelocity()) <= Constants.SHOOT_TOLERANCE;
+        return bang.atSetpoint();
     }
 
     public void setPower(double power)
@@ -49,18 +48,15 @@ public class Shooter extends SubsystemBase
         upperFlywheelMotor.set(power);
     }
 
-    public void setVelocity(double setpoint) 
+    public void setVelocity(double setpoint)
     {
-        // leftShooter.setVelocity(setpoint);
-        // rightShooter.setVelocity(setpoint);
-        // upperFlywheelMotor.getPIDController().setReference(setpoint, ControlType.kVelocity);
         this.setpoint = setpoint;
         
-        double output = flywheelPID.calculate(getVelocity(), setpoint) + 
+        double output = RobotController.getBatteryVoltage() * bang.calculate(getVelocity(), setpoint) + 
                         flywheelFF.calculate(setpoint);
 
         masterShoot.setVoltage(output);
-        upperFlywheelMotor.setVoltage(output);
+        upperFlywheelMotor.set(setpoint / 6380);
     }
 
     /**
@@ -69,7 +65,6 @@ public class Shooter extends SubsystemBase
     public void stop()
     {
         masterShoot.set(0);
-        slaveShoot.set(0);
 
         upperFlywheelMotor.set(0);
     }
@@ -84,4 +79,19 @@ public class Shooter extends SubsystemBase
 	{
 		return masterShoot.getVelocity();
 	}
+
+    public double calcRPM(double distanceMeters) 
+    {
+		return 624.778 * distanceMeters + 6935.374; // done with the power of a ti84 😎
+    }
+
+    public double calcDistanceMeters(double ty)
+    {
+        // https://docs.limelightvision.io/en/latest/cs_estimating_distance.html
+        double h2 = 2.6416, h1 = 0.5116, a1 = Math.toRadians(15), a2 = ty;    //  TODO: measure a1, the limelight mounting angle from horizontal
+        
+        double d = (h2 - h1) / Math.tan(a1 + a2);
+
+        return d;
+    }
 }
