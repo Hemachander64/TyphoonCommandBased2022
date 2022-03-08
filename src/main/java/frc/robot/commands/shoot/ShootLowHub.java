@@ -10,16 +10,15 @@ public class ShootLowHub extends SequentialCommandGroup {
     private Feeder feeder;
     private Hood hood;
 
-    public ShootLowHub (Limelight ll, Shooter shooter, Hood hood, Feeder feeder, Drivetrain dt) {
+    public ShootLowHub (Limelight ll, Shooter shooter, Hood hood, Feeder feeder) {
         
-        addRequirements(ll, shooter, hood, feeder, dt);
+        addRequirements(ll, shooter, hood /*feeder, */);
 
         addCommands(
-			new StartShooterCommand(shooter, () -> 700).withTimeout(2)	//	according to desmos trajectory calc, 700rpm is perfect for lower hub
-                .alongWith(new AimCommand(dt, ll::getTx)),
-            new RunCommand(feeder::on, feeder).withTimeout(0.1),
-            new InstantCommand(shooter::stop, shooter),
-            new InstantCommand(feeder::off, feeder)
+			new StartShooterCommand(shooter, () -> 1400)	//	according to desmos trajectory calc, 700rpm is perfect for lower hub
+            // new RunCommand(feeder::on, feeder).withTimeout(0.1),
+            // new InstantCommand(shooter::stop, shooter)
+            // new InstantCommand(feeder::off, feeder)
         );
 
         this.shooter = shooter;
@@ -33,7 +32,7 @@ public class ShootLowHub extends SequentialCommandGroup {
         super.end(interrupted);
 
         shooter.stop();
-        feeder.off();
+        // feeder.off();
         hood.setHoodAngularPower(0);
     }
 }

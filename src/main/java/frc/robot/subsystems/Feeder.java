@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class Feeder extends SubsystemBase
@@ -18,12 +19,13 @@ public class Feeder extends SubsystemBase
     public Feeder()
     {
         setDefaultCommand(new RunCommand(this::off, this));
+        feedMotor.setNeutralMode(NeutralMode.Brake);
         register();
     }
 
     public void on() 
     {
-        feedMotor.set(ControlMode.PercentOutput, 0.3);
+        feedMotor.set(ControlMode.PercentOutput, 0.5);
     }
     
     public void reverse() 

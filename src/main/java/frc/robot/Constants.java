@@ -41,42 +41,38 @@ public final class Constants {
             public static final double TTA_TOLERANCE = 4.5;
         //#endregion Turn To Angle PID Constants
     //#endregion Drivetrain Constants
+
+    //#region Feeder Constants
         //#region Feeder IDs
             public static final int FEEDER_MOTOR_ID = 15;
         //#endregion Feeder IDs
+    //#endregion Feeder Constants
 
+    //#region Lift Constants
         //#region Lift IDs
             public static final int LEFT_LIFT_MOTOR_ID = 10;
             public static final int RIGHT_LIFT_MOTOR_ID = 8;
         //#endregion Lift IDs
-    
+    //#endregion Lift Constants
+
+    //#region Intake Constants
         //#region Intake IDs
-            public static final int INTAKE_MOTOR_ID = 11;
+            public static final int INTAKE_MOTOR_ID = 6;
         //#endregion Intake IDs
+    //#endregion Intake Constants
 
     //#region Hood Constants
-
         //#region Hood IDs
             public static final int HOOD_MOTOR_ID = 410; //TODO: CHANGE THIS WHEN READY
             public static final int HOOD_ANGLE_MOTOR_ID = 420; //TODO: change THIS!!!!!
         //#endregion Hood IDs
-
+        
         //#region Hood PID Constans
             public static final double HOOD_KP = 0;
         //#endregion Hood PID Constants
-
     //#endregion Hood Constants
-
-            public static final int EVIL_STALL_CURRENT_LIMIT = 35;
-            public static final int EVIL_FREE_CURRENT_LIMIT  = 35;
-            public static final int GOOD_STALL_CURRENT_LIMIT = 25;
-            public static final int GOOD_FREE_CURRENT_LIMIT  = 25;
-            
-            public static final double ksVolts = 0.16;
-            public static final double kvVoltSecondsPerMeter = 0;
-            public static final double kaVoltSecondsSquaredPerMeter = 0;
-            public static final double kPDriveVel = 0;
-
+        
+        //#region
             public static final double kMaxSpeedMetersPerSecond = 3.0 / 3;
             public static final double kMaxAccelerationMetersPerSecondSquared = 3.0 / 3;
     //#region Shooter Constants
@@ -95,8 +91,25 @@ public final class Constants {
         //#endregion Shooter IDs
     //#endregion Shooter Constants
 
+    //#region TeleOp Constants
+        //#region Drive Mode Constants
+        public static final int EVIL_STALL_CURRENT_LIMIT = 35;
+        public static final int EVIL_FREE_CURRENT_LIMIT  = 35;
+        public static final int GOOD_STALL_CURRENT_LIMIT = 25;
+        public static final int GOOD_FREE_CURRENT_LIMIT  = 25;
+        //#endregion Drive Mode Constants
+    //#endregion TeleOp Constants
+
+    //#region Auton Contsants
+        //#region Trajectory Constants
+        public static final double ksVolts = 0.16;
+        public static final double kvVoltSecondsPerMeter = 0;
+        public static final double kaVoltSecondsSquaredPerMeter = 0;
+        public static final double kPDriveVel = 0;
+        //#endregion Trajectory Constants
+    //#endregion Auton Constants
     //#region LED Constants
-        public static final int LED_PWM_PORT = 0;
+            public static final int LED_PWM_PORT = 0;
     //#endregion LED Constants
 }
 

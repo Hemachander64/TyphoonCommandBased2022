@@ -8,6 +8,7 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase
 {
     WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_ID);
+    double speed = 0.65;
     
     public void off()
     {
@@ -15,11 +16,11 @@ public class Intake extends SubsystemBase
     }
     public void reverse()
     {
-        intakeMotor.set(-1.0);
+        intakeMotor.set(-speed);
     }   
     public void on()
     {
-        intakeMotor.set(1.0);
+        intakeMotor.set(speed);
     }
 }
 

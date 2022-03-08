@@ -39,12 +39,10 @@ public class RobotContainer
   private final Feeder feeder = new Feeder();
   private final Intake intake = new Intake();
   private final Limelight ll = new Limelight();
-  
 
   Saitek flightStick = new Saitek(0);
   XboxController driverController = new XboxController(1);
   XboxController operatorController = new XboxController(2);
-
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -53,25 +51,40 @@ public class RobotContainer
   {
     // TODO: write terminal autos
     var rumbleOnCommand = new RunCommand(() -> operatorController.setRumble(RumbleType.kLeftRumble, 1.0)) // TODO: use this
-      .alongWith(new RunCommand(() -> operatorController.setRumble(RumbleType.kRightRumble, 1.0)));
-    
+        .alongWith(new RunCommand(() -> operatorController.setRumble(RumbleType.kRightRumble, 1.0)));
+
     var rumbleOffCommand = new RunCommand(() -> operatorController.setRumble(RumbleType.kLeftRumble, 0.0))
-      .alongWith(new RunCommand(() -> operatorController.setRumble(RumbleType.kRightRumble, 0.0)));
+        .alongWith(new RunCommand(() -> operatorController.setRumble(RumbleType.kRightRumble, 0.0)));
 
     var slowButton = new JoystickButton(driverController, kLeftBumper.value)
         .or(new JoystickButton(flightStick, Saitek.SButtons.kTrigger.ordinal()));
-    var defenseButton = new JoystickButton(driverController, kRightBumper.value)
+    var defenseButton = new JoystickButton(driverController, kB.value)
         .or(new JoystickButton(flightStick, Saitek.SButtons.kM.ordinal()));
 
     var shootButton = new JoystickButton(operatorController, kA.value);
-    var liftUpButton = new POVButton(operatorController, 0);
-    var liftDownButton = new POVButton(operatorController, 180);
+    var lowShotButton = new JoystickButton(operatorController, kB.value);
+    var reverseShootButton = new JoystickButton(operatorController, kY.value);
+    var liftUpButton = new POVButton(driverController, 0);
+    var liftDownButton = new POVButton(driverController, 180);
+    var intakeButton = new JoystickButton(operatorController, kRightBumper.value);
+    var outtakeButton = new JoystickButton(operatorController, kLeftBumper.value);
+    var feedUpButton = new POVButton(operatorController, 0);
+    var feedDownButton = new POVButton(operatorController, 180);
+    var resetLiftEncodersButton = new JoystickButton(driverController, kStart.value);
+    var switchLiftIdleModeButton = new JoystickButton(driverController, kBack.value);
 
+    var aimButton = new JoystickButton(driverController, kRightBumper.value);
+    
     slowButton.whenActive(new InstantCommand(dt::slowMode)).whenInactive(new InstantCommand(() -> dt.setOutput(1)));
 
-    //defenseButton.whenActive(new InstantCommand(dt::evilMode)).whenInactive(new InstantCommand(dt::goodMode));
+    defenseButton.whenActive(new InstantCommand(dt::evilMode)).whenInactive(new InstantCommand(dt::goodMode));
 
-    shootButton.whenPressed(new ShootUpperHub(ll, shooter, hood, feeder, dt));
+    shootButton.whileHeld(new ShootUpperHub(ll, shooter, hood, feeder).andThen(rumbleOnCommand))
+        .whenReleased(new InstantCommand(shooter::stop, shooter).alongWith(rumbleOffCommand));    
+    lowShotButton.whileHeld(new ShootLowHub(ll, shooter, hood, feeder))
+        .whenReleased(new InstantCommand(shooter::stop, shooter));
+    reverseShootButton.whileHeld(new RunCommand(() -> shooter.setMotorVelocity(-1000), shooter))
+        .whenReleased(new InstantCommand(shooter::stop, shooter));
 
     dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-flightStick.getY() - driverController.getLeftY(),
         flightStick.getZRotation() + driverController.getRightX()), dt));
@@ -81,9 +94,26 @@ public class RobotContainer
     liftUpButton.whileHeld(new RunCommand(() -> lift.on(0.5)))
         .or(liftDownButton.whileHeld(new RunCommand(() -> lift.on(-0.5))));
 
+    intakeButton.whileHeld(new RunCommand(intake::on, intake))
+        .or(outtakeButton.whileHeld(new RunCommand(intake::reverse, intake)))
+        .whenInactive(new RunCommand(intake::off, intake));
+
+    feeder.setDefaultCommand(new RunCommand(() -> feeder.off(), feeder));
+
+    feedUpButton.whileHeld(new RunCommand(() -> feeder.on()))
+        .or(feedDownButton.whileHeld(new RunCommand(() -> feeder.reverse())))
+        .whenInactive(new RunCommand(feeder::off, feeder));
+
+    aimButton.whileHeld(new AimCommand(dt, ll::getTx));
+    // resetLiftEncodersButton.whenPressed(new InstantCommand(lift::resetEncoders, lift));
+    // switchLiftIdleModeButton.whenHeld(new RunCommand(lift::coastMode, lift))
+        // .whenReleased(new InstantCommand(lift::brakeMode, lift));
+
     chooser.setDefaultOption("TopBallAuto", new TopBallAuto(ll, shooter, hood, feeder, intake, dt));
     chooser.addOption("MiddleBallAuto", new MiddleBallAuto(ll, shooter, hood, feeder, intake, dt));
     chooser.addOption("LowBallAuto", new LowBallAuto(ll, shooter, hood, feeder, intake, dt));
+    chooser.addOption("No auto", new ShootLowHub(ll, shooter, hood, feeder).andThen(new RunCommand(feeder::on, feeder).withTimeout(2)));
+    chooser.addOption("No-ish auto", new ShootLowHub(ll, shooter, hood, feeder).andThen(new RunCommand(feeder::on, feeder).withTimeout(2)).andThen(new DTDProfiled(1, dt)));
     chooser.addOption("Drive To Distance", new DriveToDistanceCommand(1, dt));
     chooser.addOption("Turn To Angle", new TurnToAngleCommand(90, dt));
     chooser.addOption("DTDProfiled", new DTDProfiled(1, dt));

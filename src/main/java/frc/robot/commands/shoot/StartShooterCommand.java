@@ -24,7 +24,7 @@ public class StartShooterCommand extends CommandBase {
 
     public void execute()
     {
-        shooter.setVelocity(RPM);
+        shooter.setMotorVelocity(RPM);
     }
     
     public boolean isFinished()

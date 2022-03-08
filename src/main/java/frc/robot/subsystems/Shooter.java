@@ -21,7 +21,9 @@ public class Shooter extends SubsystemBase
     protected CRRFalcon500 slaveShoot;
     protected CANSparkMax upperFlywheelMotor;
 
-    protected BangBangController bang = new BangBangController(Constants.SHOOT_TOLERANCE);
+    // protected BangBangController bang = new BangBangController(Constants.SHOOT_TOLERANCE);
+    protected PIDController bang = new PIDController(0, 0, 0);
+    // protected PIDController bang = new PIDController(0.0075, 0, 0);
     protected SimpleMotorFeedforward flywheelFF = new SimpleMotorFeedforward(Constants.KS_SHOOT, Constants.KV_SHOOT);
     protected double setpoint;
     
@@ -48,7 +50,7 @@ public class Shooter extends SubsystemBase
         upperFlywheelMotor.set(power);
     }
 
-    public void setVelocity(double setpoint)
+    public void setMotorVelocity(double setpoint)
     {
         this.setpoint = setpoint;
         
@@ -80,18 +82,23 @@ public class Shooter extends SubsystemBase
 		return masterShoot.getVelocity();
 	}
 
-    public double calcRPM(double distanceMeters) 
+    public double calcRPM(double distanceMeters)
     {
-		return 624.778 * distanceMeters + 6935.374; // done with the power of a ti84 😎
+	    double flywheelRPM = 624.778 * distanceMeters + 6935.374; // done with the power of a ti84 😎
+        double motorRPM = flywheelRPM / 2; // gear ratio;
+
+        SmartDashboard.putNumber("RPM", motorRPM);
+        return motorRPM;
     }
 
     public double calcDistanceMeters(double ty)
     {
         // https://docs.limelightvision.io/en/latest/cs_estimating_distance.html
-        double h2 = 2.6416, h1 = 0.5116, a1 = Math.toRadians(15), a2 = Math.toRadians(ty);    //  TODO: measure a1, the limelight mounting angle from horizontal
+        double h2 = 2.6416, h1 = 0.5116, a1 = Math.toRadians(30), a2 = Math.toRadians(ty);    //  TODO: measure a1, the limelight mounting angle from horizontal
         
         double d = (h2 - h1) / Math.tan(a1 + a2);
 
+        SmartDashboard.putNumber("d", d);
         return d;
     }
 }

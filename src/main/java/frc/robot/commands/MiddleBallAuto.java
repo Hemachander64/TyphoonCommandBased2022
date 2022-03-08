@@ -11,11 +11,12 @@ public class MiddleBallAuto extends SequentialCommandGroup
 	{
 		addCommands
 		(
-			new DTDProfiled(1.528, dt),
+			// new DTDProfiled(1.528, dt),
 			new RunCommand(intake::on, intake).withTimeout(2),
 			new InstantCommand(intake::off, intake),
             // new DTDProfiled(-1.528, dt),
-			new ShootUpperHub(ll, shooter, hood, feeder, dt)
+			new ShootUpperHub(ll, shooter, hood, feeder),
+			new RunCommand(feeder::on, feeder).withTimeout(2)
 		);
 	}
 }

@@ -15,7 +15,8 @@ public class TopBallAuto extends SequentialCommandGroup
 			new RunCommand(intake::on, intake).withTimeout(2),
 			new InstantCommand(intake::off, intake),
             // new DTDProfiled(-2.274, dt),
-			new ShootUpperHub(ll, shooter, hood, feeder, dt)
+			new ShootUpperHub(ll, shooter, hood, feeder),
+			new RunCommand(feeder::on, feeder).withTimeout(2)
 		);
 	}
 }

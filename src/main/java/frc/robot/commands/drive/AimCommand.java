@@ -10,7 +10,7 @@ public class AimCommand extends CommandBase
 {
  
     Drivetrain dt;
-    PIDController txController = new PIDController(0.05, 0, 0);
+    PIDController txController = new PIDController(0.055, 0, 0);
     DoubleSupplier txGetter;
     //PIDController tyController = new PIDController(0.1, 0, 0);
 

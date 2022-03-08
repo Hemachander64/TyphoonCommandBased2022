@@ -69,7 +69,7 @@ public class Drivetrain extends SubsystemBase
 	public Drivetrain()
 	{
 
-		/*
+		
 		lfEncoder.setPositionConversionFactor(0.4788 / 10.71);
 		rfEncoder.setPositionConversionFactor(0.4788 / 10.71);
 		lfEncoder.setVelocityConversionFactor(0.4788 / 10.71);
@@ -79,7 +79,7 @@ public class Drivetrain extends SubsystemBase
 		lbEncoder.setPosition(0);
 		rfEncoder.setPosition(0);
 		rbEncoder.setPosition(0);
-		*/
+		
 
 		leftFront.setIdleMode(IdleMode.kCoast);
 		rightFront.setIdleMode(IdleMode.kCoast);
@@ -130,8 +130,8 @@ public class Drivetrain extends SubsystemBase
 
 	public void resetEncoders()
 	{
-		// lfEncoder.setPosition(0);
-		// rfEncoder.setPosition(0);
+		lfEncoder.setPosition(0);
+		rfEncoder.setPosition(0);
 	}
 
 	public void resetGyro()
@@ -197,8 +197,8 @@ public class Drivetrain extends SubsystemBase
 
 	public double getDistanceMeters()
 	{
-		return 0.0;
-		//return Math.max(lfEncoder.getPosition(), rfEncoder.getPosition());
+		// return 0.0;
+		return Math.max(lfEncoder.getPosition(), rfEncoder.getPosition());
 	}
 
 	public void evilMode()
@@ -236,7 +236,7 @@ public class Drivetrain extends SubsystemBase
 		leftBack.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
 		rightBack.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
 
-		setOutput(0.2);
+		setOutput(0.3);
 	}
 
 	SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter);

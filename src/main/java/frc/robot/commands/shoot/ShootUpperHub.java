@@ -11,18 +11,19 @@ public class ShootUpperHub extends SequentialCommandGroup {
     private Feeder feeder;
     private Hood hood;
 
-    public ShootUpperHub (Limelight ll, Shooter shooter, Hood hood, Feeder feeder, Drivetrain dt) {
+    public ShootUpperHub (Limelight ll, Shooter shooter, Hood hood, Feeder feeder) {
         
-        addRequirements(ll, shooter, hood, feeder, dt);
+        addRequirements(ll, shooter, hood /*feeder,*/);
 
         addCommands(
-			new StartShooterCommand(shooter, () -> shooter.calcRPM(shooter.calcDistanceMeters(ll.getTy()))).withTimeout(2)
-				.alongWith(new AimCommand(dt, ll::getTx)),	//	According to ReCalc, the shooter needs 1.17 sec to wind up
-            new RunCommand(feeder::on, feeder).withTimeout(0.1),
-			new StartShooterCommand(shooter, () -> shooter.calcRPM(shooter.calcDistanceMeters(ll.getTy()))).withTimeout(2),
-            new RunCommand(feeder::on, feeder).withTimeout(0.1),
-            new InstantCommand(shooter::stop, shooter),
-            new InstantCommand(feeder::off, feeder)
+			// new StartShooterCommand(shooter, () -> shooter.calcRPM(shooter.calcDistanceMeters(ll.getTy())))
+			// new StartShooterCommand(shooter, () -> 3825) // upper hub
+			new StartShooterCommand(shooter, () -> 3000) // far away lower hub
+				// .alongWith(new AimCommand(dt, ll::getTx)),	//	According to ReCalc, the shooter needs 1.17 sec to wind up
+            // new RunComm  and(feeder::on, feeder).withTimeout(0.1),
+			// new StartShooterCommand(shooter, () -> shooter.calcRPM(shooter.calcDistanceMeters(ll.getTy()))).withTimeout(2),
+            // new RunCommand(feeder::on, feeder).withTimeout(0.1),
+            // new InstantCommand(feeder::off, feeder)
         );
 
         this.shooter = shooter;
@@ -36,7 +37,7 @@ public class ShootUpperHub extends SequentialCommandGroup {
         super.end(interrupted);
 
         shooter.stop();
-        feeder.off();
+        // feeder.off();
         hood.setHoodAngularPower(0);
     }
 }
