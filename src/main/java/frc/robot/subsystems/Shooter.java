@@ -84,7 +84,7 @@ public class Shooter extends SubsystemBase
 
     public double calcRPM(double distanceMeters)
     {
-	    double flywheelRPM = 624.778 * distanceMeters + 6935.374; // done with the power of a ti84 😎
+	    double flywheelRPM = 624.778 * distanceMeters + 6935.374; // done with the power of a ti84 😎 I love linear regression models.
         double motorRPM = flywheelRPM / 2; // gear ratio;
 
         SmartDashboard.putNumber("RPM", motorRPM);
@@ -97,7 +97,7 @@ public class Shooter extends SubsystemBase
         double h2 = 2.6416, h1 = 0.5116, a1 = Math.toRadians(30), a2 = Math.toRadians(ty);    //  TODO: measure a1, the limelight mounting angle from horizontal
         
         double d = (h2 - h1) / Math.tan(a1 + a2);
-
+        
         SmartDashboard.putNumber("d", d);
         return d;
     }

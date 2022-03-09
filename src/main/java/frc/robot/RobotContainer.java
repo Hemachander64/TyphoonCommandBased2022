@@ -79,7 +79,7 @@ public class RobotContainer
 
     defenseButton.whenActive(new InstantCommand(dt::evilMode)).whenInactive(new InstantCommand(dt::goodMode));
 
-    shootButton.whileHeld(new ShootUpperHub(ll, shooter, hood, feeder).andThen(rumbleOnCommand))
+    shootButton.whileHeld(new ShootUpperHub(ll, shooter, hood, feeder, dt).andThen(rumbleOnCommand))
         .whenReleased(new InstantCommand(shooter::stop, shooter).alongWith(rumbleOffCommand));    
     lowShotButton.whileHeld(new ShootLowHub(ll, shooter, hood, feeder))
         .whenReleased(new InstantCommand(shooter::stop, shooter));
