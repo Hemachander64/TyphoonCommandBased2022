@@ -38,7 +38,7 @@ public class RobotContainer
   private final Drivetrain dt = new Drivetrain();
   private final Feeder feeder = new Feeder();
   private final Intake intake = new Intake();
-  private final Limelight ll = new Limelight();
+ // private final Limelight ll = new Limelight();
 
   Saitek flightStick = new Saitek(0);
   XboxController driverController = new XboxController(1);
@@ -79,9 +79,9 @@ public class RobotContainer
 
     defenseButton.whenActive(new InstantCommand(dt::evilMode)).whenInactive(new InstantCommand(dt::goodMode));
 
-    shootButton.whileHeld(new ShootUpperHub(ll, shooter, hood, feeder).andThen(rumbleOnCommand))
+    shootButton.whileHeld(new ShootUpperHub(shooter, hood, feeder).andThen(rumbleOnCommand))
         .whenReleased(new InstantCommand(shooter::stop, shooter).alongWith(rumbleOffCommand));    
-    lowShotButton.whileHeld(new ShootLowHub(ll, shooter, hood, feeder))
+    lowShotButton.whileHeld(new ShootLowHub(shooter, hood, feeder))
         .whenReleased(new InstantCommand(shooter::stop, shooter));
     reverseShootButton.whileHeld(new RunCommand(() -> shooter.setMotorVelocity(-1000), shooter))
         .whenReleased(new InstantCommand(shooter::stop, shooter));
@@ -104,16 +104,16 @@ public class RobotContainer
         .or(feedDownButton.whileHeld(new RunCommand(() -> feeder.reverse())))
         .whenInactive(new RunCommand(feeder::off, feeder));
 
-    aimButton.whileHeld(new AimCommand(dt, ll::getTx));
+  //  aimButton.whileHeld(new AimCommand(dt, ll::getTx));
     // resetLiftEncodersButton.whenPressed(new InstantCommand(lift::resetEncoders, lift));
     // switchLiftIdleModeButton.whenHeld(new RunCommand(lift::coastMode, lift))
         // .whenReleased(new InstantCommand(lift::brakeMode, lift));
 
-    chooser.setDefaultOption("TopBallAuto", new TopBallAuto(ll, shooter, hood, feeder, intake, dt));
-    chooser.addOption("MiddleBallAuto", new MiddleBallAuto(ll, shooter, hood, feeder, intake, dt));
-    chooser.addOption("LowBallAuto", new LowBallAuto(ll, shooter, hood, feeder, intake, dt));
-    chooser.addOption("No auto", new ShootLowHub(ll, shooter, hood, feeder).andThen(new RunCommand(feeder::on, feeder).withTimeout(2)));
-    chooser.addOption("No-ish auto", new ShootLowHub(ll, shooter, hood, feeder).andThen(new RunCommand(feeder::on, feeder).withTimeout(2)).andThen(new DTDProfiled(1, dt)));
+    chooser.setDefaultOption("TopBallAuto", new TopBallAuto(shooter, hood, feeder, intake, dt));
+    chooser.addOption("MiddleBallAuto", new MiddleBallAuto(shooter, hood, feeder, intake, dt));
+    chooser.addOption("LowBallAuto", new LowBallAuto(shooter, hood, feeder, intake, dt));
+    chooser.addOption("No auto", new ShootLowHub(shooter, hood, feeder).andThen(new RunCommand(feeder::on, feeder).withTimeout(2)));
+    chooser.addOption("No-ish auto", new ShootLowHub(shooter, hood, feeder).andThen(new RunCommand(feeder::on, feeder).withTimeout(2)).andThen(new DTDProfiled(1, dt)));
     chooser.addOption("Drive To Distance", new DriveToDistanceCommand(1, dt));
     chooser.addOption("Turn To Angle", new TurnToAngleCommand(90, dt));
     chooser.addOption("DTDProfiled", new DTDProfiled(1, dt));

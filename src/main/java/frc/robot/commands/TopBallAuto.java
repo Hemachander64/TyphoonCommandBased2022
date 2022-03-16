@@ -7,16 +7,17 @@ import frc.robot.subsystems.*;
 
 public class TopBallAuto extends SequentialCommandGroup
 {
-	public TopBallAuto(Limelight ll, Shooter shooter, Hood hood, Feeder feeder, Intake intake, Drivetrain dt)
+	public TopBallAuto(Shooter shooter, Hood hood, Feeder feeder, Intake intake, Drivetrain dt)
 	{
 		addCommands
 		(
-			new DTDProfiled(2.274, dt),
-			new RunCommand(intake::on, intake).withTimeout(2),
-			new InstantCommand(intake::off, intake),
-            // new DTDProfiled(-2.274, dt),
-			new ShootUpperHub(ll, shooter, hood, feeder),
-			new RunCommand(feeder::on, feeder).withTimeout(2)
+			new ShootUpperHub(shooter, hood, feeder),
+			new DTDProfiled(2.274, dt)
+			// new RunCommand(intake::on, intake).withTimeout(2),
+			// new InstantCommand(intake::off, intake),
+            // // new DTDProfiled(-2.274, dt),
+			// new ShootUpperHub(shooter, hood, feeder),
+			// new RunCommand(feeder::on, feeder).withTimeout(2)
 		);
 	}
 }
