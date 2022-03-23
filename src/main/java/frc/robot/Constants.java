@@ -21,8 +21,8 @@ public final class Constants {
     //#region Drivetrain Constants
         //#region Drivetrain IDs
             public static final int LF_MOTOR_ID = 1;
-            public static final int LB_MOTOR_ID = 5;
-            public static final int RF_MOTOR_ID = 3;
+            public static final int LB_MOTOR_ID = 3;
+            public static final int RF_MOTOR_ID = 5;
             public static final int RB_MOTOR_ID = 7;
         //#endregion Drivetrain IDs
             
@@ -52,6 +52,8 @@ public final class Constants {
         //#region Lift IDs
             public static final int LEFT_LIFT_MOTOR_ID = 10;
             public static final int RIGHT_LIFT_MOTOR_ID = 8;
+            public static final int LEFT_TRAVERSAL_MOTOR_ID = 17;
+            public static final int RIGHT_TRAVERSAL_MOTOR_ID = 18;
         //#endregion Lift IDs
     //#endregion Lift Constants
 

@@ -20,8 +20,8 @@ public class Lift extends SubsystemBase
 
         resetEncoders();
 
-        leftLiftMotor.setInverted(false);
-        rightLiftMotor.setInverted(true);
+        leftLiftMotor.setInverted(true);
+        rightLiftMotor.setInverted(false);
 
         // leftLiftMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
         // leftLiftMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
@@ -35,7 +35,7 @@ public class Lift extends SubsystemBase
 
         leftLiftMotor.setIdleMode(IdleMode.kBrake);
         rightLiftMotor.setIdleMode(IdleMode.kBrake);
-
+        
         leftLiftMotor.burnFlash();
         rightLiftMotor.burnFlash();
     }

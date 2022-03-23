@@ -19,7 +19,8 @@ public class ShootUpperHub extends SequentialCommandGroup {
 			// new StartShooterCommand(shooter, () -> shooter.calcRPM(shooter.calcDistanceMeters(ll.getTy())))
 			// new StartShooterCommand(shooter, () -> 3825) // upper hub
 			// new StartShooterCommand(shooter, () -> 3000) // far away lower hub
-			new StartShooterCommand(shooter, () -> 1490) // close up upper hub with New Hood
+			// new StartShooterCommand(shooter, () -> 1490) // close up upper hub with New Hood
+			new StartShooterCommand(shooter, () -> 2600) // testing
 				// .alongWith(new AimCommand(dt, ll::getTx)),	//	According to ReCalc, the shooter needs 1.17 sec to wind up
             // new RunComm  and(feeder::on, feeder).withTimeout(0.1),
 			// new StartShooterCommand(shooter, () -> shooter.calcRPM(shooter.calcDistanceMeters(ll.getTy()))).withTimeout(2),

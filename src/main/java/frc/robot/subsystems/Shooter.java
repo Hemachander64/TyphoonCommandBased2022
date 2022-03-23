@@ -21,9 +21,9 @@ public class Shooter extends SubsystemBase
     protected CRRFalcon500 slaveShoot;
     protected CANSparkMax upperFlywheelMotor;
 
-    // protected BangBangController bang = new BangBangController(Constants.SHOOT_TOLERANCE);
+    // protected BangBangController bang = new BangBangController(Constants.SHOOT_TOLERANCE); // This is too bang-y :(
     protected PIDController bang = new PIDController(0, 0, 0);
-    // protected PIDController bang = new PIDController(0.0075, 0, 0);
+    // protected PIDController bang = new PIDController(0.0075, 0, 0); // This is too high :(
     protected SimpleMotorFeedforward flywheelFF = new SimpleMotorFeedforward(Constants.KS_SHOOT, Constants.KV_SHOOT);
     protected double setpoint;
     
