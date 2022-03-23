@@ -81,10 +81,18 @@ public class RobotContainer
 
     // var aimButton = new JoystickButton(driverController, kRightBumper.value);
     
+    
+    dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-driverController.getLeftY(),
+        driverController.getRightX()), dt));
+
+    lift.setDefaultCommand(new RunCommand(() -> lift.off(), lift));
+
+    
     slowButton.whenActive(new InstantCommand(dt::slowMode).alongWith(new InstantCommand(traversal::slowMode)))
       .whenInactive(new InstantCommand(() -> dt.setOutput(1)).alongWith(new InstantCommand(traversal::fastMode)));
 
-    defenseButton.whenActive(new InstantCommand(dt::evilMode)).whenInactive(new InstantCommand(dt::goodMode));
+    defenseButton.whenActive(new InstantCommand(dt::evilMode))
+      .whenInactive(new InstantCommand(dt::goodMode));
 
     shootButton.whileHeld(new ShootUpperHub(shooter, hood, feeder).andThen(rumbleOnCommand))
         .whenReleased(new InstantCommand(shooter::stop, shooter).alongWith(rumbleOffCommand));    
@@ -92,11 +100,6 @@ public class RobotContainer
     //     .whenReleased(new InstantCommand(shooter::stop, shooter));
     reverseShootButton.whileHeld(new RunCommand(() -> shooter.setMotorVelocity(-1000), shooter))
         .whenReleased(new InstantCommand(shooter::stop, shooter));
-
-    dt.setDefaultCommand(new RunCommand(() -> dt.arcadeDrive(-driverController.getLeftY(),
-        driverController.getRightX()), dt));
-
-    lift.setDefaultCommand(new RunCommand(() -> lift.off(), lift));
 
     liftUpButton.whileHeld(new RunCommand(() -> lift.on(0.5), lift))
         .or(liftDownButton.whileHeld(new RunCommand(() -> lift.on(-0.5), lift)))

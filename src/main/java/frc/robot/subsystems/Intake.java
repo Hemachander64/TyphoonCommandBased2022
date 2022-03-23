@@ -21,8 +21,8 @@ public class Intake extends SubsystemBase
     
     public Intake()
     {
-        leftSolenoid.set(Value.kForward);
-        rightSolenoid.set(Value.kForward);
+        leftSolenoid.set(Value.kForward);   //  set to enable toggling
+        rightSolenoid.set(Value.kReverse);
     }
 
     public void off()
