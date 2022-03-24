@@ -42,8 +42,8 @@ public class RobotContainer
  // private final Limelight ll = new Limelight();
 
   //Saitek flightStick = new Saitek(0);
-  XboxController driverController = new XboxController(1);
-  XboxController operatorController = new XboxController(2);
+  XboxController driverController = new XboxController(0);
+  XboxController operatorController = new XboxController(1);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
