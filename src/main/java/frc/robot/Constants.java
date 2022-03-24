@@ -52,8 +52,8 @@ public final class Constants {
         //#region Lift IDs
             public static final int LEFT_LIFT_MOTOR_ID = 10;
             public static final int RIGHT_LIFT_MOTOR_ID = 8;
-            public static final int LEFT_TRAVERSAL_MOTOR_ID = 17;
-            public static final int RIGHT_TRAVERSAL_MOTOR_ID = 18;
+            public static final int LEFT_TRAVERSAL_MOTOR_ID = 18;
+            public static final int RIGHT_TRAVERSAL_MOTOR_ID = 17;
         //#endregion Lift IDs
     //#endregion Lift Constants
 
