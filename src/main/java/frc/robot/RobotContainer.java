@@ -38,7 +38,7 @@ public class RobotContainer
   private final Drivetrain dt = new Drivetrain();
   private final Feeder feeder = new Feeder();
   private final Intake intake = new Intake();
-  private final Traversal traversal = new Traversal();
+  // private final Traversal traversal = new Traversal();
  // private final Limelight ll = new Limelight();
 
   //Saitek flightStick = new Saitek(0);
@@ -69,8 +69,8 @@ public class RobotContainer
     var reverseShootButton = new JoystickButton(operatorController, kY.value);
     var liftUpButton = new POVButton(driverController, 0);
     var liftDownButton = new POVButton(driverController, 180);
-    var traversalForwardsButton = new POVButton(driverController, 270);
-    var traversalBackwardsButton = new POVButton(driverController, 90);
+    // var traversalForwardsButton = new POVButton(driverController, 270);
+    // var traversalBackwardsButton = new POVButton(driverController, 90);
     var intakeButton = new JoystickButton(operatorController, kRightBumper.value);
     var outtakeButton = new JoystickButton(operatorController, kLeftBumper.value);
     var intakeTogglePneumaticsButton = new JoystickButton(operatorController, kX.value);
@@ -88,8 +88,10 @@ public class RobotContainer
     lift.setDefaultCommand(new RunCommand(() -> lift.off(), lift));
 
     
-    slowButton.whenActive(new InstantCommand(dt::slowMode).alongWith(new InstantCommand(traversal::slowMode)))
-      .whenInactive(new InstantCommand(() -> dt.setOutput(1)).alongWith(new InstantCommand(traversal::fastMode)));
+    // slowButton.whenActive(new InstantCommand(dt::slowMode).alongWith(new InstantCommand(traversal::slowMode)))
+    //   .whenInactive(new InstantCommand(() -> dt.setOutput(1)).alongWith(new InstantCommand(traversal::fastMode)));
+    slowButton.whenActive(new InstantCommand(dt::slowMode))
+      .whenInactive(new InstantCommand(() -> dt.setOutput(1)));
 
     defenseButton.whenActive(new InstantCommand(dt::evilMode))
       .whenInactive(new InstantCommand(dt::goodMode));
@@ -105,9 +107,9 @@ public class RobotContainer
         .or(liftDownButton.whileHeld(new RunCommand(() -> lift.on(-0.5), lift)))
         .whenInactive(new RunCommand(lift::off, lift));
     
-    traversalForwardsButton.whileHeld(new RunCommand(traversal::forwards, traversal))
-      .or(traversalBackwardsButton.whileHeld(new RunCommand(traversal::backwards, traversal)))
-      .whenInactive(new RunCommand(traversal::off, traversal));
+    // traversalForwardsButton.whileHeld(new RunCommand(traversal::forwards, traversal))
+      // .or(traversalBackwardsButton.whileHeld(new RunCommand(traversal::backwards, traversal)))
+      // .whenInactive(new RunCommand(traversal::off, traversal));
 
     intakeButton.whileHeld(new RunCommand(intake::on, intake))
         .or(outtakeButton.whileHeld(new RunCommand(intake::reverse, intake)))
