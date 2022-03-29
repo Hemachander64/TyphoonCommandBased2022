@@ -42,8 +42,8 @@ public class RobotContainer
  // private final Limelight ll = new Limelight();
 
   //Saitek flightStick = new Saitek(0);
-  XboxController driverController = new XboxController(0);
-  XboxController operatorController = new XboxController(1);
+  XboxController driverController = new XboxController(1);
+  XboxController operatorController = new XboxController(2);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -57,12 +57,10 @@ public class RobotContainer
     var rumbleOffCommand = new RunCommand(() -> operatorController.setRumble(RumbleType.kLeftRumble, 0.0))
         .alongWith(new RunCommand(() -> operatorController.setRumble(RumbleType.kRightRumble, 0.0)));
 
-    var slowButton = new JoystickButton(driverController, kLeftBumper.value)
-      .or(new JoystickButton(driverController, kRightBumper.value));
+    var slowButton = new JoystickButton(driverController, kRightBumper.value);
     
     final double defenseTriggerSensitivity = 0.2;
-    var defenseButton = new Trigger(()-> driverController.getLeftTriggerAxis() > defenseTriggerSensitivity 
-      || driverController.getRightTriggerAxis() > defenseTriggerSensitivity);
+    var defenseButton = new Trigger(()-> driverController.getRightTriggerAxis() > defenseTriggerSensitivity);
 
     var shootButton = new JoystickButton(operatorController, kA.value);
     // var lowShotButton = new JoystickButton(operatorController, kB.value);
@@ -159,6 +157,15 @@ public class RobotContainer
     shooter.stop();
     dt.resetEncoders();
     // dt.resetOdometry(new Pose2d()); // we aren't using odometry at waco
+  }
+
+  public void robotPeriodic()
+  {
+    // Don't think this is useful...
+    // if (driverController == null)
+    //   driverController = new XboxController(1);
+    // if(operatorController == null)
+    //   operatorController = new XboxController(2);
   }
 
 }

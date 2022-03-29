@@ -15,6 +15,7 @@ public class ShootLowHub extends SequentialCommandGroup {
         addRequirements(shooter, hood /*feeder, */);
 
         addCommands(
+			// new StartShooterCommand(shooter, () -> 1400)	//	according to desmos trajectory calc, 700rpm is perfect for lower hub
 			new StartShooterCommand(shooter, () -> 1400)	//	according to desmos trajectory calc, 700rpm is perfect for lower hub
             // new RunCommand(feeder::on, feeder).withTimeout(0.1),
             // new InstantCommand(shooter::stop, shooter)

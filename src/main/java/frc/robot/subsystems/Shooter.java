@@ -75,6 +75,9 @@ public class Shooter extends SubsystemBase
     public void periodic() 
     {
         SmartDashboard.putNumber("Shewter Speeeeeeeed", masterShoot.getVelocity());
+        
+        // temp:
+        SmartDashboard.putBoolean("Shooter Probably OK", masterShoot.getVelocity() >= 2370);
     }
 
 	public double getVelocity()

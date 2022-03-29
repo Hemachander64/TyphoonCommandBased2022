@@ -104,6 +104,8 @@ public class Drivetrain extends SubsystemBase
 
 		SmartDashboard.putData(field);
 		setOutput(1);
+		
+		// evilMode();
 	}
 
 	public void arcadeDrive(double xSpeed, double zRotation)
