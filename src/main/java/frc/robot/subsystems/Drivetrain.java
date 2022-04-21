@@ -25,25 +25,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Drivetrain extends SubsystemBase
 {
 	// Create our motors
 
-	CANSparkMax leftFront = new CANSparkMax(Constants.LF_MOTOR_ID, MotorType.kBrushless);
-	CANSparkMax leftBack = new CANSparkMax(Constants.LB_MOTOR_ID, MotorType.kBrushless);
-	CANSparkMax rightFront = new CANSparkMax(Constants.RF_MOTOR_ID, MotorType.kBrushless);
-	CANSparkMax rightBack = new CANSparkMax(Constants.RB_MOTOR_ID, MotorType.kBrushless);
-
-	RelativeEncoder lfEncoder = leftFront.getEncoder();
-	RelativeEncoder lbEncoder = leftBack.getEncoder();
-	RelativeEncoder rfEncoder = rightFront.getEncoder();
-	RelativeEncoder rbEncoder = rightBack.getEncoder();
+	WPI_TalonSRX leftFront = new WPI_TalonSRX(Constants.LF_MOTOR_ID);
+	WPI_TalonSRX leftBack = new WPI_TalonSRX(Constants.LB_MOTOR_ID);
+	WPI_TalonSRX rightFront = new WPI_TalonSRX(Constants.RF_MOTOR_ID);
+	WPI_TalonSRX rightBack = new WPI_TalonSRX(Constants.RB_MOTOR_ID);
 
 	MotorControllerGroup left = new MotorControllerGroup(leftFront, leftBack);
 	MotorControllerGroup right = new MotorControllerGroup(rightFront, rightBack);;
@@ -68,39 +61,15 @@ public class Drivetrain extends SubsystemBase
 
 	public Drivetrain()
 	{
-
-		
-		lfEncoder.setPositionConversionFactor(0.4788 / 10.71);
-		rfEncoder.setPositionConversionFactor(0.4788 / 10.71);
-		lfEncoder.setVelocityConversionFactor(0.4788 / 10.71);
-		rfEncoder.setVelocityConversionFactor(0.4788 / 10.71);
-
-		lfEncoder.setPosition(0);
-		lbEncoder.setPosition(0);
-		rfEncoder.setPosition(0);
-		rbEncoder.setPosition(0);
-		
-
-		leftFront.setIdleMode(IdleMode.kCoast);
-		rightFront.setIdleMode(IdleMode.kCoast);
-		leftBack.setIdleMode(IdleMode.kCoast);
-		rightBack.setIdleMode(IdleMode.kCoast);
-			
-		leftFront.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
-		rightFront.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
-		rightBack.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
-		leftBack.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
-
+		leftFront.setNeutralMode(NeutralMode.Brake);
+		leftBack.setNeutralMode(NeutralMode.Brake);
+		rightFront.setNeutralMode(NeutralMode.Brake);
+		rightBack.setNeutralMode(NeutralMode.Brake);
 
 		leftFront.setInverted(false);
 		leftBack.setInverted(false);
 		rightFront.setInverted(true);
 		rightBack.setInverted(true);
-
-		leftFront.burnFlash();
-		leftBack.burnFlash();
-		rightFront.burnFlash();
-		rightBack.burnFlash();
 
 		SmartDashboard.putData(field);
 		setOutput(1);
@@ -113,33 +82,10 @@ public class Drivetrain extends SubsystemBase
 		dt.arcadeDrive(output * xSpeed, output * zRotation);
 	}
 
-	public double getAngle()
-	{
-		return gyro.getAngle();
-	}
-
-	public void resetSensors()
-	{
-		resetEncoders();
-		resetGyro();
-	}
-
 
 	public void setOutput(double x)
 	{
 		dt.setMaxOutput(x);
-	}
-
-	public void resetEncoders()
-	{
-		lfEncoder.setPosition(0);
-		rfEncoder.setPosition(0);
-	}
-
-	public void resetGyro()
-	{
-		gyro.reset();
-		gyro.calibrate();
 	}
 
 	@Override
@@ -196,48 +142,14 @@ public class Drivetrain extends SubsystemBase
 	{
 		odometry.resetPosition(initialPose, new Rotation2d(gyro.getAngle()));
 	}
-
-	public double getDistanceMeters()
-	{
-		// return 0.0;
-		return Math.max(lfEncoder.getPosition(), rfEncoder.getPosition());
-	}
-
-	public void evilMode()
-	{
-		leftFront.setIdleMode(IdleMode.kBrake);
-		leftBack.setIdleMode(IdleMode.kBrake);
-		rightFront.setIdleMode(IdleMode.kBrake);
-		rightBack.setIdleMode(IdleMode.kBrake);
-		leftFront.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
-		rightFront.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
-		leftBack.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
-		rightBack.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
-
-	}
-
-	public void goodMode()
-	{
-		leftFront.setIdleMode(IdleMode.kCoast);
-		leftBack.setIdleMode(IdleMode.kCoast);
-		rightFront.setIdleMode(IdleMode.kCoast);
-		rightBack.setIdleMode(IdleMode.kCoast);	
-		
-		leftFront.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
-		rightFront.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
-		leftBack.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
-		rightBack.setSmartCurrentLimit(Constants.GOOD_STALL_CURRENT_LIMIT, Constants.GOOD_FREE_CURRENT_LIMIT);
-		
 	
-	}
+	// public void slowMode()
+	// {
+		// leftFront.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
+		// rightFront.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
+		// leftBack.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
+		// rightBack.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
 
-	public void slowMode()
-	{
-		leftFront.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
-		rightFront.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
-		leftBack.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
-		rightBack.setSmartCurrentLimit(Constants.EVIL_STALL_CURRENT_LIMIT, Constants.EVIL_FREE_CURRENT_LIMIT);
-
-		setOutput(0.3);
-	}
+		// setOutput(0.3);
+	// }
 }
