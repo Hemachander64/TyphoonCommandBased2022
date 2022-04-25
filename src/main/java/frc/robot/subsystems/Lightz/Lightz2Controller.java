@@ -7,14 +7,11 @@ public class Lightz2Controller extends SubsystemBase
 {
 	Lightz2 lightz = new Lightz2();
 
-	Shooter shooter; Feeder feeder; Drivetrain dt; Limelight ll;
+	Drivetrain dt;
 
-	public Lightz2Controller(Shooter shooter, Feeder feeder, Drivetrain dt, Limelight ll)
+	public Lightz2Controller(Drivetrain dt)
 	{
-		this.shooter = shooter;
-		this.feeder = feeder;
 		this.dt = dt;
-		this.ll = ll;
 
 		register();
 	}
@@ -26,15 +23,12 @@ public class Lightz2Controller extends SubsystemBase
 	 */
 	public void updateMode(boolean tryingToAim, boolean tryingToShoot)
 	{		
-		boolean isAimed =  Math.abs(ll.getTx()) < 1;
-		boolean isReadyToShoot = shooter.atSetpoint();
-
-		if (tryingToAim && isAimed && tryingToShoot && isReadyToShoot)
-			lightz.mode = Lightz2.Mode.kGreen;
-		else if ((tryingToAim && !isAimed) || (tryingToShoot && !isReadyToShoot))
-			lightz.mode = Lightz2.Mode.kRed;
-		else
-			lightz.mode = Lightz2.Mode.kBlue;
+		//if (atPressure)
+		//	lightz.mode = Lightz2.Mode.kGreen;
+		//else if (isCompressing())
+		//	lightz.mode = Lightz2.Mode.kRed;
+		//else
+		//	lightz.mode = Lightz2.Mode.kBlue;
 
 	}
 
